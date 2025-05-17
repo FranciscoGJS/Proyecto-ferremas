@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+	<meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
 
 	<!-- title -->
-	<title>Shop</title>
+	<title>Tienda</title>
 
 	<!-- favicon -->
 	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
@@ -52,7 +52,7 @@
 						<!-- logo -->
 						<div class="site-logo">
 							<a href="{% url 'index' %}">
-								<img src="{% static 'img/logo.png' %}" alt="">
+								<img src="{% static 'img/logo.png' %}" alt="Logo">
 							</a>
 						</div>
 						<!-- logo -->
@@ -60,37 +60,23 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="{% url 'index' %}">Home</a>
+								<li class="current-list-item"><a href="{% url 'index' %}">Inicio</a></li>
+								<li><a href="{% url 'about' %}">Nosotros</a></li>
+								<li><a href="#">Páginas</a>
 									<ul class="sub-menu">
-										<li><a href="{% url 'index' %}">Static Home</a></li>
-										<li><a href="{% url 'index_2' %}">Slider Home</a></li>
+										<li><a href="#">Página 404</a></li>
+										<li><a href="{% url 'about' %}">Nosotros</a></li>
+										<li><a href="{% url 'cart' %}">Carrito</a></li>
+										<li><a href="{% url 'contact' %}">Contacto</a></li>
+										<li><a href="{% url 'shop' %}">Tienda</a></li>
 									</ul>
 								</li>
-								<li><a href="{% url 'about' %}">About</a></li>
-								<li><a href="#">Pages</a>
+								<li><a href="{% url 'contact' %}">Contacto</a></li>
+								<li><a href="{% url 'shop' %}">Tienda</a>
 									<ul class="sub-menu">
-										<li><a href="#">404 page</a></li>
-										<li><a href="{% url 'about' %}">About</a></li>
-										<li><a href="{% url 'cart' %}">Cart</a></li>
-										<li><a href="{% url 'checkout' %}">Check Out</a></li>
-										<li><a href="{% url 'contact' %}">Contact</a></li>
-										<li><a href="{% url 'news' %}">News</a></li>
-										<li><a href="{% url 'shop' %}">Shop</a></li>
-									</ul>
-								</li>
-								<li><a href="{% url 'news' %}">News</a>
-									<ul class="sub-menu">
-										<li><a href="{% url 'news' %}">News</a></li>
-										<li><a href="{% url 'single-news' %}">Single News</a></li>
-									</ul>
-								</li>
-								<li><a href="{% url 'contact' %}">Contact</a></li>
-								<li><a href="{% url 'shop' %}">Shop</a>
-									<ul class="sub-menu">
-										<li><a href="{% url 'shop' %}">Shop</a></li>
-										<li><a href="{% url 'checkout' %}">Check Out</a></li>
-										<li><a href="{% url 'single-product' %}">Single Product</a></li>
-										<li><a href="{% url 'cart' %}">Cart</a></li>
+										<li><a href="{% url 'shop' %}">Tienda</a></li>
+										<li><a href="{% url 'single-product' %}">Producto Individual</a></li>
+										<li><a href="{% url 'cart' %}">Carrito</a></li>
 									</ul>
 								</li>
 								<li>
@@ -119,16 +105,16 @@
 					<span class="close-btn"><i class="fas fa-window-close"></i></span>
 					<div class="search-bar">
 						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
+							<h3>Buscar:</h3>
+							<input type="text" placeholder="Palabras clave">
+							<button type="submit">Buscar <i class="fas fa-search"></i></button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end search arewa -->
+	<!-- end search area -->
 	
 	<!-- breadcrumb-section -->
 	<div class="breadcrumb-section breadcrumb-bg">
@@ -136,8 +122,8 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
-						<p>Fresh and Organic</p>
-						<h1>Shop</h1>
+						<p>Ferretería y Materiales</p>
+						<h1>Tienda</h1>
 					</div>
 				</div>
 			</div>
@@ -153,10 +139,10 @@
                 <div class="col-md-12">
                     <div class="product-filters">
                         <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li data-filter=".strawberry">Strawberry</li>
-                            <li data-filter=".berry">Berry</li>
-                            <li data-filter=".lemon">Lemon</li>
+                            <li class="active" data-filter="*">Todos</li>
+                            <li data-filter=".strawberry">Martillos</li>
+                            <li data-filter=".berry">Destornilladores</li>
+                            <li data-filter=".lemon">Cintas Métricas</li>
                         </ul>
                     </div>
                 </div>
@@ -168,9 +154,9 @@
 						<div class="product-image">
 							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-1.jpg' %}" alt=""></a>
 						</div>
-						<h3>Strawberry</h3>
-						<p class="product-price"><span>Per Kg</span> 85$ </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3>Martillo</h3>
+						<p class="product-price"><span>Por unidad</span> $85 </p>
+						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center berry">
@@ -178,9 +164,9 @@
 						<div class="product-image">
 							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-2.jpg' %}" alt=""></a>
 						</div>
-						<h3>Berry</h3>
-						<p class="product-price"><span>Per Kg</span> 70$ </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3>Destornillador</h3>
+						<p class="product-price"><span>Por unidad</span> $70 </p>
+						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center lemon">
@@ -188,9 +174,9 @@
 						<div class="product-image">
 							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-3.jpg' %}" alt=""></a>
 						</div>
-						<h3>Lemon</h3>
-						<p class="product-price"><span>Per Kg</span> 35$ </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3>Cinta Métrica</h3>
+						<p class="product-price"><span>Por unidad</span> $35 </p>
+						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center">
@@ -198,9 +184,9 @@
 						<div class="product-image">
 							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-4.jpg' %}" alt=""></a>
 						</div>
-						<h3>Avocado</h3>
-						<p class="product-price"><span>Per Kg</span> 50$ </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3>Taladro</h3>
+						<p class="product-price"><span>Por unidad</span> $150 </p>
+						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center">
@@ -208,9 +194,9 @@
 						<div class="product-image">
 							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-5.jpg' %}" alt=""></a>
 						</div>
-						<h3>Green Apple</h3>
-						<p class="product-price"><span>Per Kg</span> 45$ </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3>Pala</h3>
+						<p class="product-price"><span>Por unidad</span> $45 </p>
+						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center strawberry">
@@ -218,9 +204,9 @@
 						<div class="product-image">
 							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-6.jpg' %}" alt=""></a>
 						</div>
-						<h3>Strawberry</h3>
-						<p class="product-price"><span>Per Kg</span> 80$ </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<h3>Martillo Grande</h3>
+						<p class="product-price"><span>Por unidad</span> $120 </p>
+						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
 					</div>
 				</div>
 			</div>
@@ -229,11 +215,11 @@
 				<div class="col-lg-12 text-center">
 					<div class="pagination-wrap">
 						<ul>
-							<li><a href="#">Prev</a></li>
+							<li><a href="#">Anterior</a></li>
 							<li><a href="#">1</a></li>
 							<li><a class="active" href="#">2</a></li>
 							<li><a href="#">3</a></li>
-							<li><a href="#">Next</a></li>
+							<li><a href="#">Siguiente</a></li>
 						</ul>
 					</div>
 				</div>
@@ -254,7 +240,7 @@
 						<div class="single-logo-item">
 							<img src="{% static 'img/company-logos/2.png' %}" alt="">
 						</div>
-						<div class_single-logo-item">
+						<div class="single-logo-item">
 							<img src="{% static 'img/company-logos/3.png' %}" alt="">
 						</div>
 						<div class="single-logo-item">
@@ -276,38 +262,37 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box about-widget">
-						<h2 class="widget-title">About us</h2>
-						<p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+						<h2 class="widget-title">Sobre nosotros</h2>
+						<p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Get in Touch</h2>
+						<h2 class="widget-title">Contacto</h2>
 						<ul>
-							<li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-							<li>support@fruitkha.com</li>
+							<li>Calle Principal 123, Ciudad, País</li>
+							<li>contacto@ferremas.com</li>
 							<li>+00 111 222 3333</li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box pages">
-						<h2 class="widget-title">Pages</h2>
+						<h2 class="widget-title">Páginas</h2>
 						<ul>
-							<li><a href="{% url 'index' %}">Home</a></li>
-							<li><a href="{% url 'about' %}">About</a></li>
-							<li><a href="{% url 'shop' %}">Shop</a></li>
-							<li><a href="{% url 'news' %}">News</a></li>
-							<li><a href="{% url 'contact' %}">Contact</a></li>
+							<li><a href="{% url 'index' %}">Inicio</a></li>
+							<li><a href="{% url 'about' %}">Nosotros</a></li>
+							<li><a href="{% url 'shop' %}">Tienda</a></li>
+							<li><a href="{% url 'contact' %}">Contacto</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box subscribe">
-						<h2 class="widget-title">Subscribe</h2>
-						<p>Subscribe to our mailing list to get the latest updates.</p>
+						<h2 class="widget-title">Suscríbete</h2>
+						<p>Recibe novedades y ofertas exclusivas en tu correo.</p>
 						<form action="{% url 'index' %}">
-							<input type="email" placeholder="Email">
+							<input type="email" placeholder="Correo electrónico">
 							<button type="submit"><i class="fas fa-paper-plane"></i></button>
 						</form>
 					</div>
@@ -322,8 +307,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
-						Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
+						Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
 					</p>
 				</div>
 				<div class="col-lg-6 text-right col-md-12">

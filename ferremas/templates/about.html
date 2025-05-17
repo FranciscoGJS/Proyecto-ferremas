@@ -1,14 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Responsive Bootstrap4 Shop Template">
+	<meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
 
 	<!-- title -->
-	<title>About</title>
+	<title>Nosotros</title>
 
 	<!-- favicon -->
 	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
@@ -60,37 +60,23 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="{% url 'index' %}">Home</a>
+								<li class="current-list-item"><a href="{% url 'index' %}">Inicio</a></li>
+								<li><a href="{% url 'about' %}">Nosotros</a></li>
+								<li><a href="#">Páginas</a>
 									<ul class="sub-menu">
-										<li><a href="{% url 'index' %}">Static Home</a></li>
-										<li><a href="{% url 'index_2' %}">Slider Home</a></li>
+										<li><a href="#">Página 404</a></li>
+										<li><a href="{% url 'about' %}">Nosotros</a></li>
+										<li><a href="{% url 'cart' %}">Carrito</a></li>
+										<li><a href="{% url 'contact' %}">Contacto</a></li>
+										<li><a href="{% url 'shop' %}">Tienda</a></li>
 									</ul>
 								</li>
-								<li><a href="{% url 'about' %}">About</a></li>
-								<li><a href="#">Pages</a>
+								<li><a href="{% url 'contact' %}">Contacto</a></li>
+								<li><a href="{% url 'shop' %}">Tienda</a>
 									<ul class="sub-menu">
-										<li><a href="#">404 page</a></li>
-										<li><a href="{% url 'about' %}">About</a></li>
-										<li><a href="{% url 'cart' %}">Cart</a></li>
-										<li><a href="{% url 'checkout' %}">Check Out</a></li>
-										<li><a href="{% url 'contact' %}">Contact</a></li>
-										<li><a href="{% url 'news' %}">News</a></li>
-										<li><a href="{% url 'shop' %}">Shop</a></li>
-									</ul>
-								</li>
-								<li><a href="{% url 'news' %}">News</a>
-									<ul class="sub-menu">
-										<li><a href="{% url 'news' %}">News</a></li>
-										<li><a href="{% url 'single-news' %}">Single News</a></li>
-									</ul>
-								</li>
-								<li><a href="{% url 'contact' %}">Contact</a></li>
-								<li><a href="{% url 'shop' %}">Shop</a>
-									<ul class="sub-menu">
-										<li><a href="{% url 'shop' %}">Shop</a></li>
-										<li><a href="{% url 'checkout' %}">Check Out</a></li>
-										<li><a href="{% url 'single-product' %}">Single Product</a></li>
-										<li><a href="{% url 'cart' %}">Cart</a></li>
+										<li><a href="{% url 'shop' %}">Tienda</a></li>
+										<li><a href="{% url 'single-product' %}">Producto Individual</a></li>
+										<li><a href="{% url 'cart' %}">Carrito</a></li>
 									</ul>
 								</li>
 								<li>
@@ -119,16 +105,16 @@
 					<span class="close-btn"><i class="fas fa-window-close"></i></span>
 					<div class="search-bar">
 						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
+							<h3>Buscar:</h3>
+							<input type="text" placeholder="Palabras clave">
+							<button type="submit">Buscar <i class="fas fa-search"></i></button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end search arewa -->
+	<!-- end search area -->
 	
 	<!-- breadcrumb-section -->
 	<div class="breadcrumb-section breadcrumb-bg">
@@ -136,8 +122,8 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="breadcrumb-text">
-						<p>We sale fresh fruits</p>
-						<h1>About Us</h1>
+						<p>Tu ferretería de confianza</p>
+						<h1>Sobre Nosotros</h1>
 					</div>
 				</div>
 			</div>
@@ -151,7 +137,7 @@
 			<div class="row">
 				<div class="col-lg-7">
 					<div class="featured-text">
-						<h2 class="pb-3">Why <span class="orange-text">Fruitkha</span></h2>
+						<h2 class="pb-3">¿Por qué <span class="orange-text">Ferremas</span>?</h2>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 mb-4 mb-md-5">
 								<div class="list-box d-flex">
@@ -159,8 +145,8 @@
 										<i class="fas fa-shipping-fast"></i>
 									</div>
 									<div class="content">
-										<h3>Home Delivery</h3>
-										<p>sit voluptatem accusantium dolore mque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+										<h3>Envío a domicilio</h3>
+										<p>Recibe tus productos en la puerta de tu casa de forma rápida y segura.</p>
 									</div>
 								</div>
 							</div>
@@ -170,8 +156,8 @@
 										<i class="fas fa-money-bill-alt"></i>
 									</div>
 									<div class="content">
-										<h3>Best Price</h3>
-										<p>sit voluptatem accusantium dolore mque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+										<h3>Mejores precios</h3>
+										<p>Ofrecemos precios competitivos en toda nuestra gama de productos.</p>
 									</div>
 								</div>
 							</div>
@@ -181,8 +167,8 @@
 										<i class="fas fa-briefcase"></i>
 									</div>
 									<div class="content">
-										<h3>Custom Box</h3>
-										<p>sit voluptatem accusantium dolore mque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+										<h3>Asesoría personalizada</h3>
+										<p>Te ayudamos a elegir los materiales y herramientas ideales para tu proyecto.</p>
 									</div>
 								</div>
 							</div>
@@ -192,8 +178,8 @@
 										<i class="fas fa-sync-alt"></i>
 									</div>
 									<div class="content">
-										<h3>Quick Refund</h3>
-										<p>sit voluptatem accusantium dolore mque laudantium, totam rem aperiam, eaque ipsa quae ab illo.</p>
+										<h3>Devolución rápida</h3>
+										<p>¡Recibe tu reembolso en 3 días si no quedas satisfecho!</p>
 									</div>
 								</div>
 							</div>
@@ -208,9 +194,9 @@
 	<!-- shop banner -->
 	<section class="shop-banner">
     	<div class="container">
-        	<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
-            <div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-            <a href="{% url 'shop' %}" class="cart-btn btn-lg">Shop Now</a>
+        	<h3>¡Promoción de temporada! <br> Grandes <span class="orange-text">Descuentos...</span></h3>
+            <div class="sale-percent"><span>¡Oferta! <br> Hasta</span>50% <span>de descuento</span></div>
+            <a href="{% url 'shop' %}" class="cart-btn btn-lg">Ver productos</a>
         </div>
     </section>
 	<!-- end shop banner -->
@@ -221,8 +207,8 @@
 			<div class="row">
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="section-title">
-						<h3>Our <span class="orange-text">Team</span></h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+						<h3>Nuestro <span class="orange-text">Equipo</span></h3>
+						<p>Conoce a las personas que hacen posible Ferremas.</p>
 					</div>
 				</div>
 			</div>
@@ -230,7 +216,7 @@
 				<div class="col-lg-4 col-md-6">
 					<div class="single-team-item">
 						<div class="team-bg team-bg-1"></div>
-						<h4>Jimmy Doe <span>Farmer</span></h4>
+						<h4>Juan Pérez <span>Gerente</span></h4>
 						<ul class="social-link-team">
 							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
 							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
@@ -241,7 +227,7 @@
 				<div class="col-lg-4 col-md-6">
 					<div class="single-team-item">
 						<div class="team-bg team-bg-2"></div>
-						<h4>Marry Doe <span>Farmer</span></h4>
+						<h4>María López <span>Atención al cliente</span></h4>
 						<ul class="social-link-team">
 							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
 							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
@@ -252,7 +238,7 @@
 				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
 					<div class="single-team-item">
 						<div class="team-bg team-bg-3"></div>
-						<h4>Simon Joe <span>Farmer</span></h4>
+						<h4>Carlos Ruiz <span>Logística</span></h4>
 						<ul class="social-link-team">
 							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
 							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
@@ -276,9 +262,9 @@
 								<img src="{% static 'img/avaters/avatar1.png' %}" alt="">
 							</div>
 							<div class="client-meta">
-								<h3>Saira Hakim <span>Local shop owner</span></h3>
+								<h3>Pedro Sánchez <span>Cliente</span></h3>
 								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+									"Excelente atención y productos de calidad. Siempre encuentro lo que necesito para mis proyectos."
 								</p>
 								<div class="last-icon">
 									<i class="fas fa-quote-right"></i>
@@ -290,9 +276,9 @@
 								<img src="{% static 'img/avaters/avatar2.png' %}" alt="">
 							</div>
 							<div class="client-meta">
-								<h3>David Niph <span>Local shop owner</span></h3>
+								<h3>Lucía Gómez <span>Cliente</span></h3>
 								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+									"Ferremas me ayudó a elegir los mejores materiales para mi casa. ¡Muy recomendados!"
 								</p>
 								<div class="last-icon">
 									<i class="fas fa-quote-right"></i>
@@ -304,9 +290,9 @@
 								<img src="{% static 'img/avaters/avatar3.png' %}" alt="">
 							</div>
 							<div class="client-meta">
-								<h3>Jacob Sikim <span>Local shop owner</span></h3>
+								<h3>Andrés Torres <span>Cliente</span></h3>
 								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+									"Gran variedad de productos y entregas rápidas. ¡Volveré a comprar!"
 								</p>
 								<div class="last-icon">
 									<i class="fas fa-quote-right"></i>
@@ -354,38 +340,37 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box about-widget">
-						<h2 class="widget-title">About us</h2>
-						<p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+						<h2 class="widget-title">Sobre nosotros</h2>
+						<p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Get in Touch</h2>
+						<h2 class="widget-title">Contacto</h2>
 						<ul>
-							<li>34/8, East Hukupara, Gifirtok, Sadan.</li>
-							<li>support@fruitkha.com</li>
+							<li>Calle Principal 123, Ciudad, País</li>
+							<li>contacto@ferremas.com</li>
 							<li>+00 111 222 3333</li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box pages">
-						<h2 class="widget-title">Pages</h2>
+						<h2 class="widget-title">Páginas</h2>
 						<ul>
-							<li><a href="{% url 'index' %}">Home</a></li>
-							<li><a href="{% url 'about' %}">About</a></li>
-							<li><a href="{% url 'shop' %}">Shop</a></li>
-							<li><a href="{% url 'news' %}">News</a></li>
-							<li><a href="{% url 'contact' %}">Contact</a></li>
+							<li><a href="{% url 'index' %}">Inicio</a></li>
+							<li><a href="{% url 'about' %}">Nosotros</a></li>
+							<li><a href="{% url 'shop' %}">Tienda</a></li>
+							<li><a href="{% url 'contact' %}">Contacto</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<div class="footer-box subscribe">
-						<h2 class="widget-title">Subscribe</h2>
-						<p>Subscribe to our mailing list to get the latest updates.</p>
+						<h2 class="widget-title">Suscríbete</h2>
+						<p>Recibe novedades y ofertas exclusivas en tu correo.</p>
 						<form action="{% url 'index' %}">
-							<input type="email" placeholder="Email">
+							<input type="email" placeholder="Correo electrónico">
 							<button type="submit"><i class="fas fa-paper-plane"></i></button>
 						</form>
 					</div>
@@ -400,8 +385,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
-						Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
+						Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
 					</p>
 				</div>
 				<div class="col-lg-6 text-right col-md-12">
