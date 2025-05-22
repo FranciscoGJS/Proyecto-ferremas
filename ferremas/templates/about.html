@@ -33,7 +33,7 @@
 	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 
 </head>
-<body>
+<body></body>
 	
 	<!--PreLoader-->
     <div class="loader">
@@ -82,7 +82,7 @@
 								<li>
 									<div class="header-icons">
 										<a class="shopping-cart" href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
-										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+										<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
 									</div>
 								</li>
 							</ul>
@@ -97,24 +97,6 @@
 	</div>
 	<!-- end header -->
 
-	<!-- search area -->
-	<div class="search-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
-					<div class="search-bar">
-						<div class="search-bar-tablecell">
-							<h3>Buscar:</h3>
-							<input type="text" placeholder="Palabras clave">
-							<button type="submit">Buscar <i class="fas fa-search"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end search area -->
 	
 	<!-- breadcrumb-section -->
 	<div class="breadcrumb-section breadcrumb-bg">
@@ -191,15 +173,6 @@
 	</div>
 	<!-- end featured section -->
 
-	<!-- shop banner -->
-	<section class="shop-banner">
-    	<div class="container">
-        	<h3>¡Promoción de temporada! <br> Grandes <span class="orange-text">Descuentos...</span></h3>
-            <div class="sale-percent"><span>¡Oferta! <br> Hasta</span>50% <span>de descuento</span></div>
-            <a href="{% url 'shop' %}" class="cart-btn btn-lg">Ver productos</a>
-        </div>
-    </section>
-	<!-- end shop banner -->
 
 	<!-- team section -->
 	<div class="mt-150">

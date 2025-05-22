@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrarse | Ferremas</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+<body style="min-height:100vh; background: url('{% static 'img/hero-bg.jpg' %}') no-repeat center center fixed; background-size: cover;">
+    <div class="container d-flex align-items-center justify-content-center" style="min-height:100vh;">
+        <div class="w-100" style="max-width: 430px;">
+            <div class="card shadow border-0" style="border-radius: 30px;">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                      <a href="{% url 'index' %}" style="display: flex; justify-content: center;">
+                      <img src="{% static 'img/logo.png' %}" alt="Ferremas" style="max-width:300px; width:100%; display:block; margin:0 auto;">
+                      </a>
+                    </div>
+                    <h2 class="text-center mb-4" style="font-weight:700;color:#051922;font-size:3rem;">Crear cuenta</h2>
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Corrige los errores en el formulario.
+                        </div>
+                    {% endif %}
+                    <form method="post" action="{% url 'registro' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_username">Usuario</label>
+                            <input type="text" name="username" required class="form-control" id="id_username" placeholder="Usuario">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email">Correo electrónico</label>
+                            <input type="email" name="email" required class="form-control" id="id_email" placeholder="Correo electrónico">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password1">Contraseña</label>
+                            <input type="password" name="password1" required class="form-control" id="id_password1" placeholder="Contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password2">Repetir contraseña</label>
+                            <input type="password" name="password2" required class="form-control" id="id_password2" placeholder="Repetir contraseña">
+                        </div>
+                        <button type="submit" class="btn boxed-btn w-100 mt-3 mb-2" style="background:#F28123;color:#fff;font-weight:700;border-radius:50px;">
+                            <i class="fas fa-user-plus"></i> Registrarse
+                        </button>
+                    </form>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mt-3 gap-2">
+                        <a href="{% url 'login' %}" class="btn boxed-btn w-100" style="background:#051922;color:#fff;font-weight:700;border-radius:50px;">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                        </a>
+                        <a href="{% url 'index' %}" class="btn boxed-btn w-100" style="background:#051922;color:#fff;border-radius:50px;">
+                            <i class="fas fa-arrow-left"></i> Volver al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

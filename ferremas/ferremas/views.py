@@ -23,3 +23,9 @@ def shop(request):
 
 def single_product(request):
     return render(request, 'single-product.html')
+
+def login_view(request):
+    return render(request, 'login.html')
+
+def registro_view(request):
+    return render(request, 'registro.html')
