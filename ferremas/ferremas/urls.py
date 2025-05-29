@@ -12,4 +12,6 @@ urlpatterns = [
     path('single-product/', ferremas_views.single_product, name='single-product'),  # Página "Single Product"
     path('login/', ferremas_views.login_view, name='login'),
     path('registro/', ferremas_views.registro_view, name='registro'),
+    path('logout/', ferremas_views.logout_view, name='logout'),
+    path('admin-usuarios/', ferremas_views.admin_usuarios, name='admin-usuarios'),
 ]
