@@ -16,7 +16,7 @@ def registro(usuario: UsuarioCreate, db: Session = Depends(get_db)):
         username=usuario.username,
         email=usuario.email,
         hashed_password=hashed_password,
-        rol="cliente"
+        rol=usuario.rol
     )
     db.add(db_usuario)
     db.commit()

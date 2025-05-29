@@ -56,7 +56,7 @@ def registro_view(request):
                 "username": username,
                 "email": email,
                 "password": password1,
-                "rol": "cliente"  # Siempre cliente
+                "rol": "cliente"  
             }
         )
         if response.status_code == 200:
