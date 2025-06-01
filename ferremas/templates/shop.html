@@ -8,7 +8,7 @@
 	<meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
 
 	<!-- title -->
-	<title>Tienda</title>
+	<title>Tienda | Ferremas</title>
 
 	<!-- favicon -->
 	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
@@ -120,88 +120,46 @@
                     <div class="product-filters">
                         <ul>
                             <li class="active" data-filter="*">Todos</li>
-                            <li data-filter=".strawberry">Martillos</li>
-                            <li data-filter=".berry">Destornilladores</li>
-                            <li data-filter=".lemon">Cintas Métricas</li>
+                            <li data-filter=".martillos">Martillos</li>
+                            <li data-filter=".taladro">Taladro</li>
+                            <li data-filter=".destornilladores">Destornilladores</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
 			<div class="row product-lists">
-				<div class="col-lg-4 col-md-6 text-center strawberry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-1.jpg' %}" alt=""></a>
-						</div>
-						<h3>Martillo</h3>
-						<p class="product-price"><span>Por unidad</span> $85 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center berry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-2.jpg' %}" alt=""></a>
-						</div>
-						<h3>Destornillador</h3>
-						<p class="product-price"><span>Por unidad</span> $70 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center lemon">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-3.jpg' %}" alt=""></a>
-						</div>
-						<h3>Cinta Métrica</h3>
-						<p class="product-price"><span>Por unidad</span> $35 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-4.jpg' %}" alt=""></a>
-						</div>
-						<h3>Taladro</h3>
-						<p class="product-price"><span>Por unidad</span> $150 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-5.jpg' %}" alt=""></a>
-						</div>
-						<h3>Pala</h3>
-						<p class="product-price"><span>Por unidad</span> $45 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center strawberry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-6.jpg' %}" alt=""></a>
-						</div>
-						<h3>Martillo Grande</h3>
-						<p class="product-price"><span>Por unidad</span> $120 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
+                {% for producto in productos %}
+                <div class="col-lg-4 col-md-6 text-center mb-4 {{ producto.5|lower|cut:" " }}">
+                    <div class="single-product-item" style="box-shadow:0 2px 16px rgba(0,0,0,0.08);border-radius:12px;overflow:hidden;background:#fff;transition:box-shadow 0.3s;">
+                        <div class="product-image" style="background:#f8f8f8;padding:30px 0 20px 0;">
+                            <img src="{% if producto.7 %}{{ producto.7 }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}" alt="{{ producto.1 }}" style="max-width:120px;max-height:120px;object-fit:contain;">
+                        </div>
+                        <div style="padding:20px 18px 10px 18px;">
+                            <h3 style="font-size:1.2rem;font-weight:700;color:#051922;margin-bottom:8px;">{{ producto.1 }}</h3>
+                            <p class="product-price" style="font-size:1.1rem;color:#F28123;font-weight:600;margin-bottom:6px;">
+                                <span style="font-size:0.9rem;color:#888;font-weight:400;">Por unidad</span> ${{ producto.3 }}
+                            </p>
+                            <p style="font-size:0.95rem;color:#555;min-height:38px;margin-bottom:8px;">{{ producto.2 }}</p>
+                            <div style="display:flex;justify-content:space-between;font-size:0.93rem;color:#888;margin-bottom:10px;">
+                                <span><i class="fas fa-tag"></i> {{ producto.5 }}</span>
+                                <span><i class="fas fa-industry"></i> {{ producto.6 }}</span>
+                            </div>
+                            <form class="add-cart-form" data-producto-id="{{ producto.0 }}" style="display:flex;align-items:center;gap:8px;">
+                                <input type="number" name="cantidad" value="1" min="1" style="width:60px;display:inline-block;border:1px solid #eee;border-radius:4px;padding:5px 8px;">
+                                <button type="submit" class="cart-btn" style="flex:1;background:#F28123;color:#fff;border:none;border-radius:4px;padding:8px 0;font-weight:600;transition:background 0.2s;">
+                                    <i class="fas fa-shopping-cart"></i> Añadir
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
 			</div>
 
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<div class="pagination-wrap">
-						<ul>
-							<li><a href="#">Anterior</a></li>
-							<li><a href="#">1</a></li>
-							<li><a class="active" href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">Siguiente</a></li>
-						</ul>
-					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -327,6 +285,38 @@
 	<script src="{% static 'js/sticker.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'js/main.js' %}"></script>
+	<script>
+$(function() {
+    $('.add-cart-form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var producto_id = form.data('producto-id');
+        var cantidad = form.find('input[name="cantidad"]').val();
+        $.ajax({
+            url: "{% url 'add_to_cart' %}",
+            method: "POST",
+            data: {
+                'producto_id': producto_id,
+                'cantidad': cantidad,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(resp) {
+                if(resp.success){
+                    // Mostrar toast
+                    $('#toast-success').fadeIn(200).delay(1800).fadeOut(400);
+                } else {
+                    // Puedes mostrar un toast de error si quieres
+                    alert("Error: " + resp.error);
+                }
+            }
+        });
+    });
+});
+</script>
+
+<div id="toast-success" style="display:none;position:fixed;top:30px;right:30px;z-index:9999;min-width:220px;padding:16px 24px;background:#2ecc71;color:#fff;font-size:1.1rem;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.12);font-weight:600;">
+    <i class="fas fa-check-circle" style="margin-right:8px;"></i> Su producto se ha agregado correctamente
+</div>
 
 </body>
 </html>

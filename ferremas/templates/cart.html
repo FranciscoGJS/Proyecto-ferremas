@@ -31,7 +31,7 @@
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<!-- responsive -->
 	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-
+	<script src="https://www.paypal.com/sdk/js?client-id=AdWq-7fZl-CSZXwOa8R1HWrpuDMP6HySZNHKh4pAdEx2Fm5VRh8J0YKle1nPZKy3tTu3ime8X7H8w3pl&currency=USD"></script>
 </head>
 <body>
 	
@@ -129,63 +129,74 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="{% static 'img/products/product-img-1.jpg' %}" alt=""></td>
-									<td class="product-name">Martillo</td>
-									<td class="product-price">$85</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="{% static 'img/products/product-img-2.jpg' %}" alt=""></td>
-									<td class="product-name">Destornillador</td>
-									<td class="product-price">$70</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="far fa-window-close"></i></a></td>
-									<td class="product-image"><img src="{% static 'img/products/product-img-3.jpg' %}" alt=""></td>
-									<td class="product-name">Cinta Métrica</td>
-									<td class="product-price">$35</td>
-									<td class="product-quantity"><input type="number" placeholder="0"></td>
-									<td class="product-total">1</td>
-								</tr>
-							</tbody>
+    {% if request.session.cart %}
+        {% for item in request.session.cart.values %}
+        <tr class="table-body-row" data-producto-id="{{ item.id }}">
+            <td class="product-remove">
+                <a href="#" class="remove-item"><i class="far fa-window-close"></i></a>
+            </td>
+            <td class="product-image">
+                <img src="{% if item.imagen %}{{ item.imagen }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}"
+                     alt="{{ item.nombre }}"
+                     style="max-width:80px; max-height:80px; object-fit:contain; display:block; margin:0 auto;">
+            </td>
+            <td class="product-name">
+                {{ item.nombre }}<br>
+                <small>{{ item.descripcion }}</small><br>
+                <small>Marca: {{ item.marca }}</small><br>
+                <small>Categoría: {{ item.categoria }}</small>
+            </td>
+            <td class="product-price">${{ item.precio|floatformat:2 }}</td>
+            <td class="product-quantity">
+                <input type="number" class="update-qty"
+                       value="{{ item.cantidad }}"
+                       min="1"
+                       max="{{ item.stock }}"
+                       style="width:60px;">
+                <small style="color:#888;">Stock: {{ item.stock }}</small>
+            </td>
+            <td class="product-total">
+                {% widthratio item.precio 1 item.cantidad as total %}
+                ${{ total }}
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr><td colspan="6">Tu carrito está vacío.</td></tr>
+    {% endif %}
+</tbody>
 						</table>
 					</div>
 				</div>
 
 				<div class="col-lg-4">
 					<div class="total-section">
-						<table class="total-table">
-							<thead class="total-table-head">
-								<tr class="table-total-row">
-									<th>Total</th>
-									<th>Precio</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="total-data">
-									<td><strong>Subtotal: </strong></td>
-									<td>$500</td>
-								</tr>
-								<tr class="total-data">
-									<td><strong>Envío: </strong></td>
-									<td>$45</td>
-								</tr>
-								<tr class="total-data">
-									<td><strong>Total: </strong></td>
-									<td>$545</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="cart-buttons">
-							<a href="" class="boxed-btn black">Finalizar compra</a>
-						</div>
-					</div>
+    <table class="total-table">
+        <thead class="total-table-head">
+            <tr class="table-total-row">
+                <th>Total</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="total-data">
+                <td><strong>Subtotal: </strong></td>
+                <td>${{ subtotal }}</td>
+            </tr>
+            <tr class="total-data">
+                <td><strong>Envío: </strong></td>
+                <td>$0</td>
+            </tr>
+            <tr class="total-data">
+                <td><strong>Total: </strong></td>
+                <td><strong>${{ subtotal }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="cart-buttons">
+        <div id="paypal-button-container"></div>
+    </div>
+</div>
 				</div>
 			</div>
 		</div>
@@ -314,6 +325,80 @@
 	<script src="{% static 'js/sticker.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'js/main.js' %}"></script>
+	<script>
+$(function() {
+    // Actualizar cantidad
+    $('.cart-table').on('change', '.update-qty', function() {
+        var row = $(this).closest('tr');
+        var producto_id = row.data('producto-id');
+        var cantidad = $(this).val();
+        $.ajax({
+            url: "{% url 'update_cart' %}",
+            method: "POST",
+            data: {
+                'producto_id': producto_id,
+                'cantidad': cantidad,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(resp) {
+                if(resp.success){
+                    location.reload();
+                } else {
+                    alert("Error: " + resp.error);
+                }
+            }
+        });
+    });
+
+    // Eliminar producto
+    $('.cart-table').on('click', '.remove-item', function(e) {
+        e.preventDefault();
+        var row = $(this).closest('tr');
+        var producto_id = row.data('producto-id');
+        $.ajax({
+            url: "{% url 'remove_from_cart' %}",
+            method: "POST",
+            data: {
+                'producto_id': producto_id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(resp) {
+                if(resp.success){
+                    location.reload();
+                } else {
+                    alert("Error: " + resp.error);
+                }
+            }
+        });
+    });
+});
+</script>
+<script>
+    var total = "{{ subtotal|default:0 }}";
+    paypal.Buttons({
+        style: {
+            color:  'gold',
+            shape:  'rect',
+            label:  'pay',
+            height: 40
+        },
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: total
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                alert('Pago completado por ' + details.payer.name.given_name + ' (sandbox)');
+                window.location.href = "{% url 'index' %}";
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
 
 </body>
 </html>
