@@ -5,105 +5,229 @@
     <meta charset="UTF-8">
     <title>Gestión de Productos</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <style>
+        body {
+            background: #0481d4 !important;
+        }
+        .card-producto {
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            border: none;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            background: #fff;
+        }
+        .card-producto .card-body {
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #051922;
+        }
+        .btn-orange {
+            background: #F28123;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 50px;
+            padding: 6px 20px;
+            font-size: 1rem;
+            border: none;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 36px;
+            min-width: 90px;
+        }
+        .btn-orange:hover {
+            background: #051922;
+            color: #F28123;
+        }
+        .btn-secondary {
+            border-radius: 50px;
+            font-weight: 700;
+            padding: 6px 20px;
+            font-size: 1rem;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+        }
+        .btn-action {
+            border-radius: 20px !important;
+            font-size: 0.95rem !important;
+            padding: 4px 14px !important;
+            font-weight: 600;
+            min-width: 70px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-action-edit {
+            background: #ffe082 !important;
+            color: #7c5700 !important;
+            border: none;
+        }
+        .btn-action-edit:hover {
+            background: #ffd54f !important;
+            color: #4e3900 !important;
+        }
+        .btn-action-delete {
+            background: #ff8a80 !important;
+            color: #fff !important;
+            border: none;
+        }
+        .btn-action-delete:hover {
+            background: #ff5252 !important;
+            color: #fff !important;
+        }
+        .table thead {
+            background: #f5f5f5;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+        .img-preview {
+            max-width: 100px;
+            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        /* Espacio extra debajo del input de imagen */
+        .mb-img-input {
+            margin-bottom: 1.2rem;
+        }
+        @media (max-width: 767px) {
+            .card-producto .card-body {
+                padding: 1.2rem;
+            }
+            .btn-orange, .btn-secondary {
+                min-width: 70px;
+                font-size: 0.95rem;
+                padding: 5px 10px;
+            }
+            .btn-action {
+                min-width: 55px;
+                font-size: 0.9rem !important;
+                padding: 3px 8px !important;
+            }
+            .mb-img-input {
+                margin-bottom: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h2>Gestión de productos</h2>
-    <!-- Formulario para agregar/editar producto -->
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="producto_id" value="{{ producto_editar.id|default:'' }}">
-        <div class="mb-3">
-            <label>Nombre</label>
-            <input type="text" name="nombre" class="form-control" required value="{{ producto_editar.nombre|default:'' }}">
-        </div>
-        <div class="mb-3">
-            <label>Descripción</label>
-            <textarea name="descripcion" class="form-control" required>{{ producto_editar.descripcion|default:'' }}</textarea>
-        </div>
-        <div class="mb-3">
-            <label>Precio</label>
-            <input type="number" step="0.01" name="precio" class="form-control" required value="{{ producto_editar.precio|default:'' }}">
-        </div>
-        <div class="mb-3">
-            <label>Stock</label>
-            <input type="number" name="stock" class="form-control" required value="{{ producto_editar.stock|default:'' }}">
-        </div>
-        <div class="mb-3">
-            <label>Categoría</label>
-            <input type="text" name="categoria" class="form-control" required value="{{ producto_editar.categoria|default:'' }}">
-        </div>
-        <div class="mb-3">
-            <label>Marca</label>
-            <input type="text" name="marca" class="form-control" required value="{{ producto_editar.marca|default:'' }}">
-        </div>
-        <div class="mb-3">
-            <label>Imagen</label>
-            <input type="file" name="imagen" class="form-control">
-            {% if producto_editar.imagen %}
-                <img src="{{ producto_editar.imagen }}" alt="Imagen actual" style="max-width:100px;margin-top:10px;">
-            {% endif %}
-        </div>
-        {% if producto_editar and producto_editar.imagen %}
-            <input type="hidden" name="imagen_actual" value="{{ producto_editar.imagen }}">
-        {% endif %}
-        <button type="submit" class="btn btn-primary">{% if producto_editar %}Actualizar{% else %}Guardar{% endif %}</button>
-        <a href="{% url 'index' %}" class="btn btn-secondary">Volver a Inicio</a>
-    </form>
-
-    <hr>
-    <h4>Productos existentes</h4>
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Categoría</th>
-                <th>Marca</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for producto in productos %}
-            <tr>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.descripcion }}</td>
-                <td>${{ producto.precio }}</td>
-                <td>{{ producto.stock }}</td>
-                <td>{{ producto.categoria }}</td>
-                <td>{{ producto.marca }}</td>
-                <td>
-                    {% if producto.imagen %}
-                        <img src="{{ producto.imagen }}" alt="img" style="max-width:60px;">
+<div class="container">
+    <div class="card card-producto">
+        <div class="card-body">
+            <h2 class="mb-4" style="font-weight:700;color:#051922;">
+                <i class="fas fa-box" style="color:#F28123;"></i> Gestión de productos
+            </h2>
+            <!-- Formulario para agregar/editar producto -->
+            <form method="post" enctype="multipart/form-data" class="row g-3 mb-4">
+                {% csrf_token %}
+                <input type="hidden" name="producto_id" value="{{ producto_editar.id|default:'' }}">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" required value="{{ producto_editar.nombre|default:'' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Marca</label>
+                    <input type="text" name="marca" class="form-control" required value="{{ producto_editar.marca|default:'' }}">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Descripción</label>
+                    <textarea name="descripcion" class="form-control" required rows="2">{{ producto_editar.descripcion|default:'' }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Precio</label>
+                    <input type="number" step="0.01" name="precio" class="form-control" required value="{{ producto_editar.precio|default:'' }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Stock</label>
+                    <input type="number" name="stock" class="form-control" required value="{{ producto_editar.stock|default:'' }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Categoría</label>
+                    <select name="categoria" class="form-select" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Martillos" {% if producto_editar.categoria == "Martillos" %}selected{% endif %}>Martillos</option>
+                        <option value="Taladro" {% if producto_editar.categoria == "Taladro" %}selected{% endif %}>Taladro</option>
+                        <option value="Destornilladores" {% if producto_editar.categoria == "Destornilladores" %}selected{% endif %}>Destornilladores</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-img-input">
+                    <label class="form-label">Imagen</label>
+                    <input type="file" name="imagen" class="form-control">
+                    {% if producto_editar.imagen %}
+                        <img src="{{ producto_editar.imagen }}" alt="Imagen actual" class="img-preview">
                     {% endif %}
-                </td>
-                <td>
-    <form method="post" style="display:inline;">
-        {% csrf_token %}
-        <input type="hidden" name="edit_id" value="{{ producto.id }}">
-        <button type="submit" class="btn btn-sm btn-warning">Editar</button>
-    </form>
-    <form method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?');">
-        {% csrf_token %}
-        <input type="hidden" name="delete_id" value="{{ producto.id }}">
-        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-    </form>
-</td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="8">No hay productos registrados.</td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
+                {% if producto_editar and producto_editar.imagen %}
+                    <input type="hidden" name="imagen_actual" value="{{ producto_editar.imagen }}">
+                {% endif %}
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-orange me-2">{% if producto_editar %}Actualizar{% else %}Guardar{% endif %}</button>
+                    <a href="{% url 'index' %}" class="btn btn-secondary">Volver a Inicio</a>
+                </div>
+            </form>
+            <hr>
+            <h4 class="mb-3" style="font-weight:700;">Productos existentes</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Categoría</th>
+                            <th>Marca</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>{{ producto.marca }}</td>
+                            <td>
+                                {% if producto.imagen %}
+                                    <img src="{{ producto.imagen }}" alt="img" class="img-preview" style="max-width:60px;">
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="edit_id" value="{{ producto.id }}">
+                                    <button type="submit" class="btn btn-action btn-action-edit mb-1">Editar</button>
+                                </form>
+                                <form method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_id" value="{{ producto.id }}">
+                                    <button type="submit" class="btn btn-action btn-action-delete">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="8" class="text-center">No hay productos registrados.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
-
-{% block scripts %}
-<script>
-    // Aquí puedes agregar scripts adicionales si es necesario
-</script>
-{% endblock %}

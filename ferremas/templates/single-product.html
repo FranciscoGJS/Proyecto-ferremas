@@ -2,47 +2,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Ferremas - Producto Individual">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ferremas - Producto Individual">
 
-	<!-- title -->
-	<title>Producto Individual</title>
-
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
-	<!-- google font -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
-	<!-- magnific popup -->
-	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-	<!-- animate css -->
-	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
-	<!-- main style -->
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<!-- responsive -->
-	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-
+    <title>Producto Individual</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 </head>
 <body>
-	
-	<!--PreLoader-->
+    
+    <!--PreLoader-->
     <div class="loader">
         <div class="loader-inner">
             <div class="circle"></div>
         </div>
     </div>
     <!--PreLoader Ends-->
-	
+    
 <!-- header -->
 <div class="top-header-area" id="sticker">
     <div class="container">
@@ -57,36 +44,104 @@
                     </div>
                     <!-- logo -->
 
-                    <!-- menu start -->
-                    <nav class="main-menu">
-                        <ul>
-                            <li class="current-list-item"><a href="{% url 'index' %}">Inicio</a></li>
-                            <li><a href="{% url 'about' %}">Nosotros</a></li>
-                            <li><a href="{% url 'contact' %}">Contacto</a></li>
-                            <li><a href="{% url 'shop' %}">Tienda</a>
-                                <ul class="sub-menu">
-                                    <li><a href="{% url 'shop' %}">Tienda</a></li>
-                                    <li><a href="{% url 'single-product' %}">Producto Individual</a></li>
-                                    <li><a href="{% url 'cart' %}">Carrito</a></li>
-                                </ul>
-                            </li>
-                            <li>
+						<!-- menu start -->
+						<nav class="main-menu">
+							<ul>
+								<li class="current-list-item"><a href="{% url 'index' %}">Inicio</a></li>
+								<li><a href="{% url 'about' %}">Nosotros</a></li>
+								<li><a href="{% url 'contact' %}">Contacto</a></li>
+								<li><a href="{% url 'shop' %}">Tienda</a>
+									<ul class="sub-menu">
+										<li><a href="{% url 'shop' %}">Tienda</a></li>
+										<li><a href="{% url 'cart' %}">Carrito</a></li>
+									</ul>
+								</li>
+								{% if request.session.rol == "administrador" %}
+								<li>
+									<a href="#" style="color:#F28123; font-weight:700;">
+										<i class="fas fa-cogs"></i> Administración
+									</a>
+									<ul class="sub-menu">
+										<li>
+											<a href="{% url 'admin-usuarios' %}">
+												<i class="fas fa-users-cog"></i> Adm. usuarios
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'agregar_producto' %}">
+												<i class="fas fa-box"></i> Adm. productos
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pagos_transferencia' %}">
+												<i class="fas fa-money-check-alt"></i> Pagos transferencia
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pedidos_bodeguero' %}">
+												<i class="fas fa-warehouse"></i> Pedidos para preparar
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pedidos_vendedor' %}">
+												<i class="fas fa-truck-loading"></i> Pedidos para entregar
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'mis_pedidos' %}">
+												<i class="fas fa-box-open"></i> Mis pedidos
+											</a>
+										</li>
+									</ul>
+								</li>
+								{% else %}
+									{% if request.session.rol == "contador" %}
+									<li>
+										<a href="{% url 'pagos_transferencia' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-money-check-alt"></i> Pagos transferencia
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "bodeguero" %}
+									<li>
+										<a href="{% url 'pedidos_bodeguero' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-warehouse"></i> Pedidos para preparar
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "vendedor" %}
+									<li>
+										<a href="{% url 'pedidos_vendedor' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-truck-loading"></i> Pedidos para entregar
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "cliente" %}
+									<li>
+										<a href="{% url 'mis_pedidos' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-box-open"></i> Mis pedidos
+										</a>
+									</li>
+									{% endif %}
+								{% endif %}
+								<li>
 									<div class="header-icons">
 										<a class="shopping-cart" href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
-											{% if request.session.username %}
-												<span style="font-weight:700; color:#e9e9e9; margin-right:10px;">
-													<i class="fas fa-user"></i> {{ request.session.username }}
-												</span>
-												<a class="login-btn" href="{% url 'logout' %}">Cerrar sesión</a>
-											{% else %}
-												<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
-											{% endif %}
+										{% if request.session.username %}
+											<span style="font-weight:700; color:#e9e9e9; margin-right:10px;">
+												<i class="fas fa-user"></i> {{ request.session.username }}
+											</span>
+											<a class="login-btn" href="{% url 'logout' %}">Cerrar sesión</a>
+										{% else %}
+											<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
+										{% endif %}
 									</div>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="mobile-menu"></div>
-                    <!-- menu end -->
+								</li>
+							</ul>
+						</nav>
+						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+						<div class="mobile-menu"></div>
+						<!-- menu end -->
                 </div>
             </div>
         </div>
@@ -94,216 +149,199 @@
 </div>
 <!-- end header -->
 
-	
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Detalles del producto</p>
-						<h1>Producto Individual</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end breadcrumb section -->
+    
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>Detalles del producto</p>
+                        <h1>{{ producto.1 }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
 
-	<!-- single product -->
-	<div class="single-product mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-5">
-					<div class="single-product-img">
-						<img src="{% static 'img/products/product-img-5.jpg' %}" alt="">
-					</div>
-				</div>
-				<div class="col-md-7">
-					<div class="single-product-content">
-						<h3>Martillo Profesional</h3>
-						<p class="single-product-pricing"><span>Por unidad</span> $50</p>
-						<p>Martillo de alta calidad, ideal para trabajos de construcción y bricolaje. Mango ergonómico y cabeza de acero templado.</p>
-						<div class="single-product-form">
-							<form action="{% url 'index' %}">
-								<input type="number" placeholder="0">
-							</form>
-							<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-							<p><strong>Categoría: </strong>Herramientas</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end single product -->
+    <!-- single product -->
+    <div class="single-product mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="single-product-img">
+                        <img src="{% if producto.7 %}{{ producto.7 }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}" alt="{{ producto.1 }}">
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="single-product-content">
+                        <h3>{{ producto.1 }}</h3>
+                        <p class="single-product-pricing"><span>Por unidad</span> ${{ producto.3 }}</p>
+                        <p>{{ producto.2 }}</p>
+                        <div style="margin-bottom:10px;">
+                            <strong>Categoría:</strong> {{ producto.5 }}<br>
+                            <strong>Marca:</strong> {{ producto.6 }}<br>
+                            <strong>Stock disponible:</strong> {{ producto.4 }}
+                        </div>
+                        <form class="add-cart-form" data-producto-id="{{ producto.0 }}" style="display:flex;align-items:center;gap:8px;">
+                            <input type="number" name="cantidad" value="1" min="1" max="{{ producto.4 }}" style="width:60px;display:inline-block;border:1px solid #eee;border-radius:4px;padding:5px 8px;">
+                            <button type="submit" class="cart-btn" style="flex:1;background:#F28123;color:#fff;border:none;border-radius:4px;padding:8px 0;font-weight:600;transition:background 0.2s;">
+                                <i class="fas fa-shopping-cart"></i> Añadir al carrito
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single product -->
 
-	<!-- más productos -->
-	<div class="more-products mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="section-title">	
-						<h3><span class="orange-text">Productos</span> Relacionados</h3>
-						<p>Descubre otros productos útiles para tus proyectos.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-1.jpg' %}" alt=""></a>
-						</div>
-						<h3>Martillo</h3>
-						<p class="product-price"><span>Por unidad</span> $85 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-2.jpg' %}" alt=""></a>
-						</div>
-						<h3>Destornillador</h3>
-						<p class="product-price"><span>Por unidad</span> $70 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'single-product' %}"><img src="{% static 'img/products/product-img-3.jpg' %}" alt=""></a>
-						</div>
-						<h3>Cinta Métrica</h3>
-						<p class="product-price"><span>Por unidad</span> $35 </p>
-						<a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Añadir al carrito</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end más productos -->
+    <!-- más productos -->
+    <div class="more-products mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="section-title">	
+                        <h3><span class="orange-text">Productos</span> Relacionados</h3>
+                        <p>Descubre otros productos útiles para tus proyectos.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Aquí podrías mostrar productos relacionados si lo deseas -->
+        </div>
+    </div>
+    <!-- end más productos -->
 
-	<!-- logo carousel -->
-	<div class="logo-carousel-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="logo-carousel-inner">
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/1.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/2.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/3.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/4.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/5.png' %}" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end logo carousel -->
+    <!-- logo carousel -->
+    <div class="logo-carousel-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner">
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/1.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/2.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/3.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/4.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/5.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end logo carousel -->
 
-	<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title">Sobre nosotros</h2>
-						<p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Contacto</h2>
-						<ul>
-							<li>Ramon - Barros Luco 2876, 2663105 San Antonio, Valparaíso</li>
-							<li>contacto@ferremas.com</li>
-							<li>+00 111 222 3333</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box pages">
-						<h2 class="widget-title">Páginas</h2>
-						<ul>
-							<li><a href="{% url 'index' %}">Inicio</a></li>
-							<li><a href="{% url 'about' %}">Nosotros</a></li>
-							<li><a href="{% url 'shop' %}">Tienda</a></li>
-							<li><a href="{% url 'contact' %}">Contacto</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box subscribe">
-						<h2 class="widget-title">Suscríbete</h2>
-						<p>Recibe novedades y ofertas exclusivas en tu correo.</p>
-						<form action="{% url 'index' %}">
-							<input type="email" placeholder="Correo electrónico">
-							<button type="submit"><i class="fas fa-paper-plane"></i></button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end footer -->
-	
-	<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
-						Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
-					</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
-					<div class="social-icons">
-						<ul>
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end copyright -->
-	
-	<!-- jquery -->
-	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
-	<!-- bootstrap -->
-	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-	<!-- count down -->
-	<script src="{% static 'js/jquery.countdown.js' %}"></script>
-	<!-- isotope -->
-	<script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
-	<!-- waypoints -->
-	<script src="{% static 'js/waypoints.js' %}"></script>
-	<!-- owl carousel -->
-	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-	<!-- magnific popup -->
-	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-	<!-- mean menu -->
-	<script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
-	<!-- sticker js -->
-	<script src="{% static 'js/sticker.js' %}"></script>
-	<!-- main js -->
-	<script src="{% static 'js/main.js' %}"></script>
+<!-- footer -->
+<div class="footer-area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box about-widget">
+                    <h2 class="widget-title">Sobre nosotros</h2>
+                    <p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box get-in-touch">
+                    <h2 class="widget-title">Contacto</h2>
+                    <ul>
+                        <li>Ramon - Barros Luco 2876</li>
+                        <li>contacto@ferremas.com</li>
+                        <li>+00 111 222 3333</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box pages">
+                    <h2 class="widget-title">Páginas</h2>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'about' %}">Nosotros</a></li>
+                        <li><a href="{% url 'shop' %}">Tienda</a></li>
+                        <li><a href="{% url 'contact' %}">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end footer -->
+    
+    <!-- copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <p>&copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
+                        Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-right col-md-12">
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end copyright -->
+    
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.js' %}"></script>
+    <script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/sticker.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+$(function() {
+    $('.add-cart-form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var producto_id = form.data('producto-id');
+        var cantidad = form.find('input[name="cantidad"]').val();
+        $.ajax({
+            url: "{% url 'add_to_cart' %}",
+            method: "POST",
+            data: {
+                'producto_id': producto_id,
+                'cantidad': cantidad,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(resp) {
+                if(resp.success){
+                    $('#toast-success').fadeIn(200).delay(1800).fadeOut(400);
+                } else {
+                    alert("Error: " + resp.error);
+                }
+            }
+        });
+    });
+});
+</script>
+
+<div id="toast-success" style="display:none;position:fixed;top:30px;right:30px;z-index:9999;min-width:220px;padding:16px 24px;background:#2ecc71;color:#fff;font-size:1.1rem;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.12);font-weight:600;">
+    <i class="fas fa-check-circle" style="margin-right:8px;"></i> Su producto se ha agregado correctamente
+</div>
 
 </body>
 </html>

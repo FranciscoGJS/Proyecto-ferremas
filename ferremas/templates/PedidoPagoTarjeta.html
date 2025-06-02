@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos para preparar (Bodeguero)</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <style>
+        body {
+            background: #0481d4 !important;
+        }
+        .card-pedidos-bodeguero {
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            border: none;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            background: #fff;
+        }
+        .card-pedidos-bodeguero .card-body {
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+        }
+        .table thead {
+            background: #f5f5f5;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+        .badge {
+            font-size: 1rem;
+            padding: 0.5em 1em;
+            border-radius: 20px;
+        }
+        .btn-primary, .btn-danger {
+            border-radius: 20px !important;
+            font-size: 0.95rem !important;
+            padding: 4px 14px !important;
+            font-weight: 600;
+            min-width: 70px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (max-width: 767px) {
+            .card-pedidos-bodeguero .card-body {
+                padding: 1.2rem;
+            }
+            .badge {
+                font-size: 0.95rem;
+                padding: 0.4em 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card card-pedidos-bodeguero">
+            <div class="card-body">
+                <h2 class="mb-4" style="font-weight:700;color:#051922;">
+                    <i class="fas fa-warehouse" style="color:#F28123;"></i> Pedidos para preparar
+                </h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pedido in pedidos %}
+                            <tr>
+                                <td>{{ pedido.usuario }}</td>
+                                <td>${{ pedido.monto }}</td>
+                                <td>{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
+                                <td>
+                                    {% if pedido.estado == "listo" %}
+                                        <span class="badge bg-success">Listo para entregar</span>
+                                    {% elif pedido.estado == "pendiente" %}
+                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                    {% elif pedido.estado == "aceptado" %}
+                                        <span class="badge bg-info text-dark">Aceptado</span>
+                                    {% elif pedido.estado == "rechazado" %}
+                                        <span class="badge bg-danger">Rechazado</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ pedido.estado|title }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if pedido.estado == "aceptado" %}
+                                        <form method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                                            <button name="accion" value="listo" class="btn btn-primary btn-sm">Listo para entregar</button>
+                                        </form>
+                                    {% elif pedido.estado == "pendiente" %}
+                                        <form method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                                            <button name="accion" value="eliminar_bodeguero" class="btn btn-danger btn-sm">Limpiar</button>
+                                        </form>
+                                    {% else %}
+                                        <!-- Sin acción disponible -->
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

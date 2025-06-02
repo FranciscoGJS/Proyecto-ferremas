@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
 from enum import Enum
 
-DATABASE_URL = DATABASE_URL = "oracle+cx_oracle://usuariosbd:usuariosbd@localhost:1521/orcl"
+DATABASE_URL = "oracle+cx_oracle://usuariosbd:usuariosbd@localhost:1521/xe"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)

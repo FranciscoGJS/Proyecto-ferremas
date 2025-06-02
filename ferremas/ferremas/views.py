@@ -5,7 +5,8 @@ from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import os
-
+from .models import PagoTransferencia
+import json
 
 
 def add_to_cart(request):
@@ -18,6 +19,10 @@ def add_to_cart(request):
         if not producto:
             return JsonResponse({"success": False, "error": "Producto no encontrado"})
         cart = request.session.get("cart", {})
+        stock_disponible = int(producto[4])
+        cantidad_actual = cart.get(producto_id, {}).get("cantidad", 0)
+        if cantidad_actual + cantidad > stock_disponible:
+            return JsonResponse({"success": False, "error": "No hay suficiente stock disponible"})
         if producto_id in cart:
             cart[producto_id]["cantidad"] += cantidad
         else:
@@ -29,7 +34,7 @@ def add_to_cart(request):
                 "stock": producto[4],
                 "categoria": producto[5],
                 "marca": producto[6],
-                "imagen": producto[7] if len(producto) > 7 else "",  # <-- AGREGA ESTA LÍNEA
+                "imagen": producto[7] if len(producto) > 7 else "",
                 "cantidad": cantidad,
             }
         request.session["cart"] = cart
@@ -37,7 +42,13 @@ def add_to_cart(request):
     return JsonResponse({"success": False, "error": "Método no permitido"})
 
 def index(request):
-    return render(request, 'index.html')
+    # Obtener productos desde la API
+    response = requests.get("http://localhost:3002/productos")
+    productos = response.json() if response.status_code == 200 else []
+    productos_destacados = productos[:3]  # Solo los 3 primeros
+    return render(request, "index.html", {
+        "productos_destacados": productos_destacados,
+    })
 
 
 # Vista para la página "About"
@@ -55,20 +66,37 @@ def cart(request):
 def contact(request):
     return render(request, 'contact.html')
 
-# ...existing code...
+
 
 def shop(request):
+    # Obtener productos desde tu API
+    response = requests.get("http://localhost:3002/productos")
+    productos = response.json() if response.status_code == 200 else []
+
+    # Obtener valor del dólar
+    dolar = None
     try:
-        response = requests.get("http://localhost:3002/productos")
-        productos = response.json() if response.status_code == 200 else []
+        dolar_resp = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
+        if dolar_resp.status_code == 200:
+            data = dolar_resp.json()
+            # Cambia 'CLP' por la moneda local que desees mostrar
+            dolar = data["rates"].get("CLP")
     except Exception:
-        productos = []
-    return render(request, 'shop.html', {"productos": productos})
+        dolar = None
 
-# ...existing code...
+    return render(request, "shop.html", {
+        "productos": productos,
+        "dolar": dolar,
+    })
 
-def single_product(request):
-    return render(request, 'single-product.html')
+
+def single_product(request, producto_id):
+    response = requests.get("http://localhost:3002/productos")
+    productos = response.json() if response.status_code == 200 else []
+    producto = next((p for p in productos if int(p[0]) == int(producto_id)), None)
+    if not producto:
+        return render(request, "404.html", status=404)
+    return render(request, 'single-product.html', {'producto': producto})
 
 def login_view(request):
     if request.method == "POST":
@@ -160,12 +188,16 @@ def admin_usuarios(request):
     return render(request, "admin_usuarios.html", {"usuarios": usuarios})
 
 @csrf_exempt
+@csrf_exempt
 def update_cart(request):
     if request.method == "POST":
         producto_id = request.POST.get("producto_id")
         cantidad = int(request.POST.get("cantidad", 1))
         cart = request.session.get("cart", {})
         if producto_id in cart:
+            stock_disponible = int(cart[producto_id]["stock"])
+            if cantidad > stock_disponible:
+                return JsonResponse({"success": False, "error": "No hay suficiente stock disponible"})
             cart[producto_id]["cantidad"] = cantidad
             request.session["cart"] = cart
             return JsonResponse({"success": True})
@@ -275,3 +307,108 @@ def agregar_producto(request):
         "productos": productos,
         "producto_editar": producto_editar,
     })
+
+def transferencia_view(request):
+    cart = request.session.get("cart", {})
+    subtotal = sum(float(item["precio"]) * int(item["cantidad"]) for item in cart.values())
+    if request.method == "POST":
+        usuario = request.session.get("username")
+        monto = request.POST["monto"]
+        detalles = request.POST.get("detalles", "")
+        PagoTransferencia.objects.create(
+            usuario=usuario,
+            monto=monto,
+            detalles=detalles,
+            tipo_pago="transferencia"
+        )
+        request.session["cart"] = {}
+        return redirect("gracias_transferencia")
+    return render(request, "transferencia.html", {
+        "cart": cart,
+        "subtotal": subtotal
+    })
+
+def pagos_transferencia_contador(request):
+    rol = request.session.get("rol")
+    if rol not in ["contador", "administrador"]:
+        return redirect("index")
+    if request.method == "POST":
+        accion = request.POST.get("accion")
+        if accion == "eliminar_todos":
+            # Solo ocultar de la vista del contador, no borrar de la base de datos
+            PagoTransferencia.objects.filter(tipo_pago="transferencia").update(estado="oculto_contador")
+        else:
+            pago_id = request.POST.get("pago_id")
+            pago = PagoTransferencia.objects.get(id=pago_id)
+            if accion == "aceptar":
+                pago.estado = "aceptado"
+            elif accion == "rechazar":
+                pago.estado = "rechazado"
+            pago.save()
+    # Solo mostrar los que no están ocultos para el contador
+    pagos = PagoTransferencia.objects.filter(tipo_pago="transferencia").exclude(estado="oculto_contador").order_by('-fecha')
+    return render(request, "pagos_transferencia.html", {"pagos": pagos})
+
+def registrar_pago_paypal(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        usuario = data.get("usuario")
+        monto = data.get("monto")
+        detalles = data.get("detalles", "")
+        PagoTransferencia.objects.create(
+            usuario=usuario,
+            monto=monto,
+            estado="aceptado",
+            detalles=detalles,
+            tipo_pago="tarjeta"
+        )
+        request.session["cart"] = {}
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False}, status=400)
+
+def pedidos_bodeguero(request):
+    rol = request.session.get("rol")
+    if rol not in ["bodeguero", "administrador"]:
+        return redirect("index")
+    pedidos = PagoTransferencia.objects.filter(
+        estado__in=["pendiente", "aceptado"]
+    ).order_by('-fecha')
+    if request.method == "POST":
+        pedido_id = request.POST.get("pedido_id")
+        accion = request.POST.get("accion")
+        pedido = PagoTransferencia.objects.get(id=pedido_id)
+        if accion == "listo":
+            pedido.estado = "listo"
+            pedido.save()
+        elif accion == "eliminar_bodeguero":
+            pedido.estado = "oculto_bodeguero"
+            pedido.save()
+        return redirect("pedidos_bodeguero")
+    return render(request, "PedidoPagoTarjeta.html", {"pedidos": pedidos})
+
+def gracias_transferencia(request):
+    return render(request, "gracias_transferencia.html")
+
+def mis_pedidos(request):
+    usuario = request.session.get("username")
+    rol = request.session.get("rol")
+    if not usuario:
+        return redirect("login")
+    if rol == "administrador":
+        pedidos = PagoTransferencia.objects.all().order_by('-fecha')
+    else:
+        pedidos = PagoTransferencia.objects.filter(usuario=usuario, estado="entregado").order_by('-fecha')
+    return render(request, "mis_pedidos.html", {"pedidos": pedidos, "rol": rol})
+
+def pedidos_vendedor(request):
+    rol = request.session.get("rol")
+    if rol not in ["vendedor", "administrador"]:
+        return redirect("index")
+    pedidos = PagoTransferencia.objects.filter(estado="listo").order_by('-fecha')
+    if request.method == "POST":
+        pedido_id = request.POST.get("pedido_id")
+        pedido = PagoTransferencia.objects.get(id=pedido_id)
+        pedido.estado = "entregado"
+        pedido.save()
+        return redirect("pedidos_vendedor")
+    return render(request, "pedidos_vendedor.html", {"pedidos": pedidos})

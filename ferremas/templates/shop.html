@@ -2,60 +2,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
 
-	<!-- title -->
-	<title>Tienda | Ferremas</title>
-
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
-	<!-- google font -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
-	<!-- magnific popup -->
-	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-	<!-- animate css -->
-	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
-	<!-- main style -->
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<!-- responsive -->
-	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-
+    <title>Tienda | Ferremas</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 </head>
 <body>
-	
-	<!--PreLoader-->
+    <!--PreLoader-->
     <div class="loader">
         <div class="loader-inner">
             <div class="circle"></div>
         </div>
     </div>
     <!--PreLoader Ends-->
-	
-	<!-- header -->
-	<div class="top-header-area" id="sticker">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
-					<div class="main-menu-wrap">
-						<!-- logo -->
-						<div class="site-logo">
-							<a href="{% url 'index' %}">
-								<img src="{% static 'img/logo.png' %}" alt="Logo">
-							</a>
-						</div>
-						<!-- logo -->
+    
+    <!-- header -->
+    <div class="top-header-area" id="sticker">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 text-center">
+                    <div class="main-menu-wrap">
+                        <!-- logo -->
+                        <div class="site-logo">
+                            <a href="{% url 'index' %}">
+                                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                            </a>
+                        </div>
+                        <!-- logo -->
 
 						<!-- menu start -->
 						<nav class="main-menu">
@@ -66,21 +52,88 @@
 								<li><a href="{% url 'shop' %}">Tienda</a>
 									<ul class="sub-menu">
 										<li><a href="{% url 'shop' %}">Tienda</a></li>
-										<li><a href="{% url 'single-product' %}">Producto Individual</a></li>
 										<li><a href="{% url 'cart' %}">Carrito</a></li>
 									</ul>
 								</li>
+								{% if request.session.rol == "administrador" %}
+								<li>
+									<a href="#" style="color:#F28123; font-weight:700;">
+										<i class="fas fa-cogs"></i> Administración
+									</a>
+									<ul class="sub-menu">
+										<li>
+											<a href="{% url 'admin-usuarios' %}">
+												<i class="fas fa-users-cog"></i> Adm. usuarios
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'agregar_producto' %}">
+												<i class="fas fa-box"></i> Adm. productos
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pagos_transferencia' %}">
+												<i class="fas fa-money-check-alt"></i> Pagos transferencia
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pedidos_bodeguero' %}">
+												<i class="fas fa-warehouse"></i> Pedidos para preparar
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pedidos_vendedor' %}">
+												<i class="fas fa-truck-loading"></i> Pedidos para entregar
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'mis_pedidos' %}">
+												<i class="fas fa-box-open"></i> Mis pedidos
+											</a>
+										</li>
+									</ul>
+								</li>
+								{% else %}
+									{% if request.session.rol == "contador" %}
+									<li>
+										<a href="{% url 'pagos_transferencia' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-money-check-alt"></i> Pagos transferencia
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "bodeguero" %}
+									<li>
+										<a href="{% url 'pedidos_bodeguero' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-warehouse"></i> Pedidos para preparar
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "vendedor" %}
+									<li>
+										<a href="{% url 'pedidos_vendedor' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-truck-loading"></i> Pedidos para entregar
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "cliente" %}
+									<li>
+										<a href="{% url 'mis_pedidos' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-box-open"></i> Mis pedidos
+										</a>
+									</li>
+									{% endif %}
+								{% endif %}
 								<li>
 									<div class="header-icons">
 										<a class="shopping-cart" href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
-											{% if request.session.username %}
-												<span style="font-weight:700; color:#e9e9e9; margin-right:10px;">
-													<i class="fas fa-user"></i> {{ request.session.username }}
-												</span>
-												<a class="login-btn" href="{% url 'logout' %}">Cerrar sesión</a>
-											{% else %}
-												<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
-											{% endif %}
+										{% if request.session.username %}
+											<span style="font-weight:700; color:#e9e9e9; margin-right:10px;">
+												<i class="fas fa-user"></i> {{ request.session.username }}
+											</span>
+											<a class="login-btn" href="{% url 'logout' %}">Cerrar sesión</a>
+										{% else %}
+											<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
+										{% endif %}
 									</div>
 								</li>
 							</ul>
@@ -88,34 +141,38 @@
 						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 						<div class="mobile-menu"></div>
 						<!-- menu end -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end header -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header -->
 
-	
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Ferretería y Materiales</p>
-						<h1>Tienda</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end breadcrumb section -->
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>Ferretería y Materiales</p>
+                        <h1>Tienda</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if dolar %}
+    <div class="alert alert-info" style="margin-bottom:20px;">
+        <strong>Valor dólar hoy:</strong> ${{ dolar }} CLP
+    </div>
+    {% endif %}
+    <!-- end breadcrumb section -->
 
-	<!-- products -->
-	<div class="product-section mt-150 mb-150">
-		<div class="container">
+    <!-- products -->
+    <div class="product-section mt-150 mb-150">
+        <div class="container">
 
-			<div class="row">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="product-filters">
                         <ul>
@@ -128,15 +185,19 @@
                 </div>
             </div>
 
-			<div class="row product-lists">
+            <div class="row product-lists">
                 {% for producto in productos %}
                 <div class="col-lg-4 col-md-6 text-center mb-4 {{ producto.5|lower|cut:" " }}">
                     <div class="single-product-item" style="box-shadow:0 2px 16px rgba(0,0,0,0.08);border-radius:12px;overflow:hidden;background:#fff;transition:box-shadow 0.3s;">
                         <div class="product-image" style="background:#f8f8f8;padding:30px 0 20px 0;">
-                            <img src="{% if producto.7 %}{{ producto.7 }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}" alt="{{ producto.1 }}" style="max-width:120px;max-height:120px;object-fit:contain;">
+                            <a href="{% url 'single-product' producto.0 %}">
+                                <img src="{% if producto.7 %}{{ producto.7 }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}" alt="{{ producto.1 }}" style="max-width:120px;max-height:120px;object-fit:contain;">
+                            </a>
                         </div>
                         <div style="padding:20px 18px 10px 18px;">
-                            <h3 style="font-size:1.2rem;font-weight:700;color:#051922;margin-bottom:8px;">{{ producto.1 }}</h3>
+                            <h3 style="font-size:1.2rem;font-weight:700;color:#051922;margin-bottom:8px;">
+                                <a href="{% url 'single-product' producto.0 %}" style="color:inherit;text-decoration:none;">{{ producto.1 }}</a>
+                            </h3>
                             <p class="product-price" style="font-size:1.1rem;color:#F28123;font-weight:600;margin-bottom:6px;">
                                 <span style="font-size:0.9rem;color:#888;font-weight:400;">Por unidad</span> ${{ producto.3 }}
                             </p>
@@ -155,137 +216,117 @@
                     </div>
                 </div>
                 {% endfor %}
-			</div>
+            </div>
 
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end products -->
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end products -->
 
-	<!-- logo carousel -->
-	<div class="logo-carousel-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="logo-carousel-inner">
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/1.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/2.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/3.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/4.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/5.png' %}" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end logo carousel -->
+    <!-- logo carousel -->
+    <div class="logo-carousel-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner">
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/1.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/2.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/3.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/4.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/5.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end logo carousel -->
 
-	<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title">Sobre nosotros</h2>
-						<p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Contacto</h2>
-						<ul>
-							<li>Calle Principal 123, Ciudad, País</li>
-							<li>contacto@ferremas.com</li>
-							<li>+00 111 222 3333</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box pages">
-						<h2 class="widget-title">Páginas</h2>
-						<ul>
-							<li><a href="{% url 'index' %}">Inicio</a></li>
-							<li><a href="{% url 'about' %}">Nosotros</a></li>
-							<li><a href="{% url 'shop' %}">Tienda</a></li>
-							<li><a href="{% url 'contact' %}">Contacto</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box subscribe">
-						<h2 class="widget-title">Suscríbete</h2>
-						<p>Recibe novedades y ofertas exclusivas en tu correo.</p>
-						<form action="{% url 'index' %}">
-							<input type="email" placeholder="Correo electrónico">
-							<button type="submit"><i class="fas fa-paper-plane"></i></button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end footer -->
-	
-	<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
-						Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
-					</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
-					<div class="social-icons">
-						<ul>
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end copyright -->
-	
-	<!-- jquery -->
-	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
-	<!-- bootstrap -->
-	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-	<!-- count down -->
-	<script src="{% static 'js/jquery.countdown.js' %}"></script>
-	<!-- isotope -->
-	<script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
-	<!-- waypoints -->
-	<script src="{% static 'js/waypoints.js' %}"></script>
-	<!-- owl carousel -->
-	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-	<!-- magnific popup -->
-	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-	<!-- mean menu -->
-	<script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
-	<!-- sticker js -->
-	<script src="{% static 'js/sticker.js' %}"></script>
-	<!-- main js -->
-	<script src="{% static 'js/main.js' %}"></script>
-	<script>
+<!-- footer -->
+<div class="footer-area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box about-widget">
+                    <h2 class="widget-title">Sobre nosotros</h2>
+                    <p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box get-in-touch">
+                    <h2 class="widget-title">Contacto</h2>
+                    <ul>
+                        <li>Ramon - Barros Luco 2876</li>
+                        <li>contacto@ferremas.com</li>
+                        <li>+00 111 222 3333</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box pages">
+                    <h2 class="widget-title">Páginas</h2>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'about' %}">Nosotros</a></li>
+                        <li><a href="{% url 'shop' %}">Tienda</a></li>
+                        <li><a href="{% url 'contact' %}">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end footer -->
+    
+    <!-- copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <p>&copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
+                        Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-right col-md-12">
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end copyright -->
+    
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.js' %}"></script>
+    <script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <script src="{% static 'js/sticker.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
 $(function() {
     $('.add-cart-form').on('submit', function(e) {
         e.preventDefault();
@@ -302,10 +343,8 @@ $(function() {
             },
             success: function(resp) {
                 if(resp.success){
-                    // Mostrar toast
                     $('#toast-success').fadeIn(200).delay(1800).fadeOut(400);
                 } else {
-                    // Puedes mostrar un toast de error si quieres
                     alert("Error: " + resp.error);
                 }
             }

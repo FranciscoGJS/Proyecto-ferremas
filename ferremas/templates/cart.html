@@ -2,60 +2,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ferremas - Ferretería y Materiales de Construcción">
 
-	<!-- title -->
-	<title>Carrito</title>
+    <!-- title -->
+    <title>Carrito</title>
 
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
-	<!-- google font -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
-	<!-- magnific popup -->
-	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-	<!-- animate css -->
-	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
-	<!-- main style -->
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<!-- responsive -->
-	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-	<script src="https://www.paypal.com/sdk/js?client-id=AdWq-7fZl-CSZXwOa8R1HWrpuDMP6HySZNHKh4pAdEx2Fm5VRh8J0YKle1nPZKy3tTu3ime8X7H8w3pl&currency=USD"></script>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <!-- animate css -->
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+    <!-- main style -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <!-- responsive -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <script src="https://www.paypal.com/sdk/js?client-id=AdWq-7fZl-CSZXwOa8R1HWrpuDMP6HySZNHKh4pAdEx2Fm5VRh8J0YKle1nPZKy3tTu3ime8X7H8w3pl&currency=USD"></script>
 </head>
 <body>
-	
-	<!--PreLoader-->
+    
+    <!--PreLoader-->
     <div class="loader">
         <div class="loader-inner">
             <div class="circle"></div>
         </div>
     </div>
     <!--PreLoader Ends-->
-	
-	<!-- header -->
-	<div class="top-header-area" id="sticker">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
-					<div class="main-menu-wrap">
-						<!-- logo -->
-						<div class="site-logo">
-							<a href="{% url 'index' %}">
-								<img src="{% static 'img/logo.png' %}" alt="">
-							</a>
-						</div>
-						<!-- logo -->
+    
+    <!-- header -->
+    <div class="top-header-area" id="sticker">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 text-center">
+                    <div class="main-menu-wrap">
+                        <!-- logo -->
+                        <div class="site-logo">
+                            <a href="{% url 'index' %}">
+                                <img src="{% static 'img/logo.png' %}" alt="">
+                            </a>
+                        </div>
+                        <!-- logo -->
 
 						<!-- menu start -->
 						<nav class="main-menu">
@@ -66,21 +66,88 @@
 								<li><a href="{% url 'shop' %}">Tienda</a>
 									<ul class="sub-menu">
 										<li><a href="{% url 'shop' %}">Tienda</a></li>
-										<li><a href="{% url 'single-product' %}">Producto Individual</a></li>
 										<li><a href="{% url 'cart' %}">Carrito</a></li>
 									</ul>
 								</li>
+								{% if request.session.rol == "administrador" %}
+								<li>
+									<a href="#" style="color:#F28123; font-weight:700;">
+										<i class="fas fa-cogs"></i> Administración
+									</a>
+									<ul class="sub-menu">
+										<li>
+											<a href="{% url 'admin-usuarios' %}">
+												<i class="fas fa-users-cog"></i> Adm. usuarios
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'agregar_producto' %}">
+												<i class="fas fa-box"></i> Adm. productos
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pagos_transferencia' %}">
+												<i class="fas fa-money-check-alt"></i> Pagos transferencia
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pedidos_bodeguero' %}">
+												<i class="fas fa-warehouse"></i> Pedidos para preparar
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'pedidos_vendedor' %}">
+												<i class="fas fa-truck-loading"></i> Pedidos para entregar
+											</a>
+										</li>
+										<li>
+											<a href="{% url 'mis_pedidos' %}">
+												<i class="fas fa-box-open"></i> Mis pedidos
+											</a>
+										</li>
+									</ul>
+								</li>
+								{% else %}
+									{% if request.session.rol == "contador" %}
+									<li>
+										<a href="{% url 'pagos_transferencia' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-money-check-alt"></i> Pagos transferencia
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "bodeguero" %}
+									<li>
+										<a href="{% url 'pedidos_bodeguero' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-warehouse"></i> Pedidos para preparar
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "vendedor" %}
+									<li>
+										<a href="{% url 'pedidos_vendedor' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-truck-loading"></i> Pedidos para entregar
+										</a>
+									</li>
+									{% endif %}
+									{% if request.session.rol == "cliente" %}
+									<li>
+										<a href="{% url 'mis_pedidos' %}" style="color:#F28123; font-weight:700;">
+											<i class="fas fa-box-open"></i> Mis pedidos
+										</a>
+									</li>
+									{% endif %}
+								{% endif %}
 								<li>
 									<div class="header-icons">
 										<a class="shopping-cart" href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i></a>
-											{% if request.session.username %}
-												<span style="font-weight:700; color:#e9e9e9; margin-right:10px;">
-													<i class="fas fa-user"></i> {{ request.session.username }}
-												</span>
-												<a class="login-btn" href="{% url 'logout' %}">Cerrar sesión</a>
-											{% else %}
-												<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
-											{% endif %}
+										{% if request.session.username %}
+											<span style="font-weight:700; color:#e9e9e9; margin-right:10px;">
+												<i class="fas fa-user"></i> {{ request.session.username }}
+											</span>
+											<a class="login-btn" href="{% url 'logout' %}">Cerrar sesión</a>
+										{% else %}
+											<a class="login-btn" href="{% url 'login' %}"><i class="fas fa-user"></i> Iniciar sesión</a>
+										{% endif %}
 									</div>
 								</li>
 							</ul>
@@ -88,89 +155,89 @@
 						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
 						<div class="mobile-menu"></div>
 						<!-- menu end -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end header -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header -->
 
-	
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Tu compra en Ferremas</p>
-						<h1>Carrito</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end breadcrumb section -->
+    
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>Tu compra en Ferremas</p>
+                        <h1>Carrito</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
 
-	<!-- cart -->
-	<div class="cart-section mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 col-md-12">
-					<div class="cart-table-wrap">
-						<table class="cart-table">
-							<thead class="cart-table-head">
-								<tr class="table-head-row">
-									<th class="product-remove"></th>
-									<th class="product-image">Imagen</th>
-									<th class="product-name">Nombre</th>
-									<th class="product-price">Precio</th>
-									<th class="product-quantity">Cantidad</th>
-									<th class="product-total">Total</th>
-								</tr>
-							</thead>
-							<tbody>
+    <!-- cart -->
+    <div class="cart-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="cart-table-wrap">
+                        <table class="cart-table">
+                            <thead class="cart-table-head">
+                                <tr class="table-head-row">
+                                    <th class="product-remove"></th>
+                                    <th class="product-image">Imagen</th>
+                                    <th class="product-name">Nombre</th>
+                                    <th class="product-price">Precio</th>
+                                    <th class="product-quantity">Cantidad</th>
+                                    <th class="product-total">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
     {% if request.session.cart %}
-        {% for item in request.session.cart.values %}
-        <tr class="table-body-row" data-producto-id="{{ item.id }}">
-            <td class="product-remove">
-                <a href="#" class="remove-item"><i class="far fa-window-close"></i></a>
-            </td>
-            <td class="product-image">
-                <img src="{% if item.imagen %}{{ item.imagen }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}"
-                     alt="{{ item.nombre }}"
-                     style="max-width:80px; max-height:80px; object-fit:contain; display:block; margin:0 auto;">
-            </td>
-            <td class="product-name">
-                {{ item.nombre }}<br>
-                <small>{{ item.descripcion }}</small><br>
-                <small>Marca: {{ item.marca }}</small><br>
-                <small>Categoría: {{ item.categoria }}</small>
-            </td>
-            <td class="product-price">${{ item.precio|floatformat:2 }}</td>
-            <td class="product-quantity">
-                <input type="number" class="update-qty"
-                       value="{{ item.cantidad }}"
-                       min="1"
-                       max="{{ item.stock }}"
-                       style="width:60px;">
-                <small style="color:#888;">Stock: {{ item.stock }}</small>
-            </td>
-            <td class="product-total">
-                {% widthratio item.precio 1 item.cantidad as total %}
-                ${{ total }}
-            </td>
-        </tr>
-        {% endfor %}
+{% for item in request.session.cart.values %}
+<tr class="table-body-row" data-producto-id="{{ item.id }}">
+    <td class="product-remove">
+        <a href="#" class="remove-item"><i class="far fa-window-close"></i></a>
+    </td>
+    <td class="product-image">
+        <img src="{% if item.imagen %}{{ item.imagen }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}"
+             alt="{{ item.nombre }}"
+             style="max-width:80px; max-height:80px; object-fit:contain; display:block; margin:0 auto;">
+    </td>
+    <td class="product-name">
+        {{ item.nombre }}<br>
+        <small>{{ item.descripcion }}</small><br>
+        <small>Marca: {{ item.marca }}</small><br>
+        <small>Categoría: {{ item.categoria }}</small>
+    </td>
+    <td class="product-price">${{ item.precio|floatformat:2 }}</td>
+    <td class="product-quantity">
+        <input type="number" class="update-qty"
+               value="{{ item.cantidad }}"
+               min="1"
+               max="{{ item.stock }}"
+               style="width:60px;">
+        <small style="color:#888;">Stock: {{ item.stock }}</small>
+    </td>
+    <td class="product-total">
+        {% widthratio item.precio 1 item.cantidad as total %}
+        ${{ total }}
+    </td>
+</tr>
+{% endfor %}
     {% else %}
         <tr><td colspan="6">Tu carrito está vacío.</td></tr>
     {% endif %}
 </tbody>
-						</table>
-					</div>
-				</div>
+                        </table>
+                    </div>
+                </div>
 
-				<div class="col-lg-4">
-					<div class="total-section">
+                <div class="col-lg-4">
+                    <div class="total-section">
     <table class="total-table">
         <thead class="total-table-head">
             <tr class="table-total-row">
@@ -195,137 +262,130 @@
     </table>
     <div class="cart-buttons">
         <div id="paypal-button-container"></div>
+        <a href="{% url 'transferencia' %}" class="btn boxed-btn w-100 mt-3" style="background:#F28123;color:#fff;font-weight:700;border-radius:50px;">
+            <i class="fas fa-university"></i> Pagar por transferencia
+        </a>
     </div>
 </div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end cart -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end cart -->
 
-	<!-- logo carousel -->
-	<div class="logo-carousel-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="logo-carousel-inner">
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/1.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/2.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/3.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/4.png' %}" alt="">
-						</div>
-						<div class="single-logo-item">
-							<img src="{% static 'img/company-logos/5.png' %}" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end logo carousel -->
+    <!-- logo carousel -->
+    <div class="logo-carousel-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner">
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/1.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/2.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/3.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/4.png' %}" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="{% static 'img/company-logos/5.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end logo carousel -->
 
-	<!-- separador visual para empujar el footer hacia abajo -->
+    <!-- separador visual para empujar el footer hacia abajo -->
     <div style="height: 120px;"></div>
 
-	<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title">Sobre nosotros</h2>
-						<p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Contacto</h2>
-						<ul>
-							<li>Calle Principal 123, Ciudad, País</li>
-							<li>contacto@ferremas.com</li>
-							<li>+00 111 222 3333</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box pages">
-						<h2 class="widget-title">Páginas</h2>
-						<ul>
-							<li><a href="{% url 'index' %}">Inicio</a></li>
-							<li><a href="{% url 'about' %}">Nosotros</a></li>
-							<li><a href="{% url 'shop' %}">Tienda</a></li>
-							<li><a href="{% url 'contact' %}">Contacto</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box subscribe">
-						<h2 class="widget-title">Suscríbete</h2>
-						<p>Recibe novedades y ofertas exclusivas en tu correo.</p>
-						<form action="{% url 'index' %}">
-							<input type="email" placeholder="Correo electrónico">
-							<button type="submit"><i class="fas fa-paper-plane"></i></button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end footer -->
-	
-	<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
-						Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
-					</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
-					<div class="social-icons">
-						<ul>
-							<li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
-							<li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end copyright -->
-	
-	<!-- jquery -->
-	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
-	<!-- bootstrap -->
-	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-	<!-- count down -->
-	<script src="{% static 'js/jquery.countdown.js' %}"></script>
-	<!-- isotope -->
-	<script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
-	<!-- waypoints -->
-	<script src="{% static 'js/waypoints.js' %}"></script>
-	<!-- owl carousel -->
-	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
-	<!-- magnific popup -->
-	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-	<!-- mean menu -->
-	<script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
-	<!-- sticker js -->
-	<script src="{% static 'js/sticker.js' %}"></script>
-	<!-- main js -->
-	<script src="{% static 'js/main.js' %}"></script>
-	<script>
+<!-- footer -->
+<div class="footer-area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box about-widget">
+                    <h2 class="widget-title">Sobre nosotros</h2>
+                    <p>Ferremas, tu ferretería de confianza. Materiales, herramientas y asesoría para tus proyectos.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box get-in-touch">
+                    <h2 class="widget-title">Contacto</h2>
+                    <ul>
+                        <li>Ramon - Barros Luco 2876</li>
+                        <li>contacto@ferremas.com</li>
+                        <li>+00 111 222 3333</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-box pages">
+                    <h2 class="widget-title">Páginas</h2>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Inicio</a></li>
+                        <li><a href="{% url 'about' %}">Nosotros</a></li>
+                        <li><a href="{% url 'shop' %}">Tienda</a></li>
+                        <li><a href="{% url 'contact' %}">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end footer -->
+    
+    <!-- copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <p>Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  Todos los derechos reservados.<br>
+                        Distribuido por - <a href="https://themewagon.com/">Themewagon</a>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-right col-md-12">
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end copyright -->
+    
+    <!-- jquery -->
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <!-- bootstrap -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <!-- count down -->
+    <script src="{% static 'js/jquery.countdown.js' %}"></script>
+    <!-- isotope -->
+    <script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
+    <!-- waypoints -->
+    <script src="{% static 'js/waypoints.js' %}"></script>
+    <!-- owl carousel -->
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <!-- magnific popup -->
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- mean menu -->
+    <script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+    <!-- sticker js -->
+    <script src="{% static 'js/sticker.js' %}"></script>
+    <!-- main js -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
 $(function() {
     // Actualizar cantidad
     $('.cart-table').on('change', '.update-qty', function() {
@@ -393,8 +453,24 @@ $(function() {
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                alert('Pago completado por ' + details.payer.name.given_name + ' (sandbox)');
-                window.location.href = "{% url 'index' %}";
+                // Registrar el pago en el backend
+                fetch('/registrar-pago-paypal/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        usuario: '{{ request.session.username }}',
+                        monto: total,
+                        detalles: 'Pago realizado con PayPal. ID: ' + details.id
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Pago completado y registrado. Ahora será revisado por un administrador.');
+                    window.location.href = "{% url 'index' %}";
+                });
             });
         }
     }).render('#paypal-button-container');

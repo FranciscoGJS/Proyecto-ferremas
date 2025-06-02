@@ -2761,3 +2761,46 @@ table.order-details tbody td {
   vertical-align: middle;
   width: 100%;
 }
+
+/* Centrar y alinear todos los logos del carrusel */
+.logo-carousel-inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 140px; /* Ajusta según tu preferencia */
+}
+
+.single-logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px; /* Altura uniforme para todos los logos */
+  min-width: 180px;
+  margin: 10px 0;
+}
+
+.single-logo-item img {
+  max-height: 80px; /* Altura máxima para todos los logos */
+  max-width: 160px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Centrar verticalmente el logo en el header */
+.site-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0;
+}
+
+.site-logo img {
+  max-height: 80px; /* Ajusta el tamaño si lo deseas */
+  display: block;
+  margin: 0 auto;
+}

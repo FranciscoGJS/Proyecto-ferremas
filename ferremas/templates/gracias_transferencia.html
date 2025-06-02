@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¡Gracias por tu pago!</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container mt-5 text-center">
+    <h2>¡Gracias por tu pago!</h2>
+    <p>Tu comprobante de transferencia fue enviado correctamente.<br>
+    Será revisado por un contador y te avisaremos cuando sea aprobado.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary mt-3">Volver al inicio</a>
+</div>
+</body>
+</html>

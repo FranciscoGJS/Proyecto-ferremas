@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 const dbConfig = {
   user: 'usuariosbd',
   password: 'usuariosbd',
-  connectString: 'localhost:1521/orcl'
+  connectString: 'localhost:1521/XE'
 };
 
 // Obtener todos los productos
