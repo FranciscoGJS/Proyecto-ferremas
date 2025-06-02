@@ -9,14 +9,14 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configuración de conexión (ajusta según tu entorno)
+// //////////////////////////////////////////////////
 const dbConfig = {
   user: 'usuariosbd',
   password: 'usuariosbd',
-  connectString: 'localhost:1521/XE'
+  connectString: 'localhost:1521/orcl.duoc.com.cl' // o cambia orcl por el nombre correcto de tu servicio
 };
 
-// Obtener todos los productos
+// Obtener todos los productos///////////////////////////////
 app.get('/productos', async (req, res) => {
   let connection;
   try {
@@ -145,8 +145,12 @@ app.delete('/productos/:id', async (req, res) => {
 });
 
 app.post('/productos', async (req, res) => {
-  console.log(req.body); // <-- Agrega esto para depurar
-  const { nombre, descripcion, precio, stock, categoria, marca, imagen } = req.body;
+  console.log(req.body);
+  let { nombre, descripcion, precio, stock, categoria, marca, imagen } = req.body;
+  // Convertir a número
+  precio = parseFloat(precio);
+  stock = parseInt(stock, 10);
+
   let connection;
   try {
     connection = await oracledb.getConnection(dbConfig);
@@ -158,7 +162,7 @@ app.post('/productos', async (req, res) => {
     );
     res.json({ msg: 'Producto agregado' });
   } catch (err) {
-    console.error(err); // <-- Muestra el error en consola
+    console.error(err);
     res.status(500).json({ error: err.message });
   } finally {
     if (connection) await connection.close();

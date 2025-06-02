@@ -90,3 +90,5 @@ def cambiar_rol(user_id: int, nuevo_rol: str, db: Session = Depends(get_db)):
     usuario.rol = nuevo_rol
     db.commit()
     return {"msg": "Rol actualizado"}
+
+DATABASE_URL = "oracle+cx_oracle://usuariosbd:usuariosbd@localhost:1521/?service_name=orcl"
