@@ -7,5 +7,4 @@ GRANT CONNECT, RESOURCE, DBA TO productobd;
 4.abrir consola y ejecutar cd ferremas y luego escribir python manage.py runserver y se ejecutará la página ferremas
 5.abrir consola y ejecutar cd ferremas y luego escribir uvicorn api_usuarios.main:app --reload --port 8001 y se ejecutará la api usuarios
 6.abrir consola y ejecutar cd api_productos y luego escribir node index.js y se ejecutará la api productos
-7.Crear usuarior admin desde api usuarios (fastapi), escribiendo al final del link /docs y crear usuario con rol administrador
-8.iniciar sesion en ferremas con administrador, al lado de tienda abrá una opcion de administración y selecionar adm. usuarios para crear mas usuarios (en pagina ferremas en registrar solo se podrán crear usuarios con rol de cliente ya que el administrador otorga los demás roles)
+7.iniciar sesion en ferremas con administrador con el nombre admin y contraseña admin123, al lado de tienda abrá una opcion de administración y selecionar adm. usuarios para crear mas usuarios (en pagina ferremas en registrar solo se podrán crear usuarios con rol de cliente ya que el administrador otorga los demás roles)
