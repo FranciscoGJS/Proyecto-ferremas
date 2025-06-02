@@ -18,8 +18,8 @@ Ejecutar las siguientes sentencias en Oracle SQL*Plus o una herramienta compatib
 
 ```sql
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
-CREATE USER productobd IDENTIFIED BY productobd;
-GRANT CONNECT, RESOURCE, DBA TO productobd;
+CREATE USER usuariosbd IDENTIFIED BY usuariosbd;
+GRANT CONNECT, RESOURCE, DBA TO usuariosbd;
 
 2. Importar estructura de la base de datos
 
