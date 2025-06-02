@@ -24,3 +24,55 @@ class Usuario(Base):
     rol = Column(String(50), default=RolEnum.cliente.value)
 
 Base.metadata.create_all(bind=engine)
+
+from sqlalchemy.orm import Session
+
+def crear_admin_default():
+    session = Session(bind=engine)
+    # Usuarios por defecto
+    usuarios_default = [
+        {
+            "username": "admin",
+            "email": "admin@ferremas.com",
+            "password": "admin123",
+            "rol": "administrador"
+        },
+        {
+            "username": "vendedor",
+            "email": "vendedor@ferremas.com",
+            "password": "vendedor123",
+            "rol": "vendedor"
+        },
+        {
+            "username": "bodeguero",
+            "email": "bodeguero@ferremas.com",
+            "password": "bodeguero123",
+            "rol": "bodeguero"
+        },
+        {
+            "username": "contador",
+            "email": "contador@ferremas.com",
+            "password": "contador123",
+            "rol": "contador"
+        },
+        {
+            "username": "cliente",
+            "email": "cliente@ferremas.com",
+            "password": "cliente123",
+            "rol": "cliente"
+        }
+    ]
+    for u in usuarios_default:
+        existe = session.query(Usuario).filter_by(username=u["username"]).first()
+        if not existe:
+            usuario = Usuario(
+                username=u["username"],
+                email=u["email"],
+                hashed_password=bcrypt.hash(u["password"]),
+                rol=u["rol"]
+            )
+            session.add(usuario)
+    session.commit()
+    session.close()
+
+crear_admin_default()
