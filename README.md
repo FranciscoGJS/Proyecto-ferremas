@@ -1,63 +1,65 @@
-# Proyecto FERREMAS
+FERREMAS - Plataforma de eCommerce para Ferreterías y Construcción 🛠️
 
-FERREMAS es una aplicación de eCommerce para la gestión y venta de productos de ferretería y construcción. Este proyecto incluye una interfaz web desarrollada con Django, una API REST para usuarios con FastAPI, y una API de productos basada en Node.js.
+FERREMAS es una solución integral de comercio electrónico orientada a la venta y gestión de productos del rubro ferretero y de la construcción. La aplicación está compuesta por tres módulos principales:
 
-## Requisitos previos
+    🌐 Interfaz web desarrollada con Django
 
-- Python 3.9 o superior  
-- Node.js 14 o superior  
-- Oracle Database  
-- pip (gestor de paquetes de Python)  
-- npm (gestor de paquetes de Node.js)
+    🔐 API REST de usuarios implementada con FastAPI
 
----
+    📦 API de productos construida con Node.js
+🚀 Tecnologías y Requisitos
 
-## 1. Crear base de datos en Oracle
+Asegúrate de tener instalado lo siguiente:
 
-Ejecutar las siguientes sentencias en Oracle SQL*Plus o una herramienta compatible:
+    Python 3.9 o superior
 
-```sql
+    Node.js 14 o superior
+
+    Oracle Database
+
+    pip (gestor de paquetes de Python)
+
+    npm (gestor de paquetes de Node.js)
+
+    ⚙️ Configuración del Entorno
+1. Crear usuario en Oracle
+
+Ejecuta los siguientes comandos en Oracle SQL*Plus o una herramienta compatible:
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
 CREATE USER usuariosbd IDENTIFIED BY usuariosbd;
 GRANT CONNECT, RESOURCE, DBA TO usuariosbd;
+2. Importar estructura de base de datos
 
-2. Importar estructura de la base de datos
-
-Abrir el archivo basededatos.sql, copiar su contenido y ejecutarlo sobre el usuario productobd creado anteriormente.
+Abre el archivo basededatos.sql, copia su contenido y ejecútalo dentro del usuario usuariosbd.
+📦 Instalación del Proyecto
 3. Instalar dependencias de Python
 
-Desde la raíz del proyecto, ejecutar:
-
+Desde la raíz del proyecto, ejecuta:
 pip install -r requirements.txt
-
-4. Ejecutar la aplicación web (FERREMAS)
-
+4. Ejecutar la aplicación web (Django)
 cd ferremas
 python manage.py runserver
+Accede a la interfaz en: http://127.0.0.1:8000
+🔐 API de Usuarios (FastAPI)
+5. Iniciar FastAPI
 
-Esto iniciará el sitio web de FERREMAS en http://127.0.0.1:8000.
-5. Ejecutar la API de usuarios (FastAPI)
-
-En una nueva consola:
-
-cd ferremas
+En una nueva terminal:cd ferremas
 uvicorn api_usuarios.main:app --reload --port 8001
+Disponible en: http://127.0.0.1:8001
+📦 API de Productos (Node.js)
+6. Iniciar Node.js
 
-Esto levantará la API de usuarios en http://127.0.0.1:8001.
-6. Ejecutar la API de productos (Node.js)
-
-En otra consola:
-
+En otra terminal:
 cd api_productos
 node index.js
+Disponible en: http://localhost:3000
+👤 Acceso como Administrador
 
-Esto iniciará la API de productos en http://localhost:3000 (o el puerto configurado).
-7. Iniciar sesión como administrador
-
-Acceder a la aplicación web de FERREMAS:
+Inicia sesión en la plataforma con las siguientes credenciales:
 
     Usuario: admin
 
     Contraseña: admin123
 
-Una vez iniciada la sesión, en el menú junto a la opción "Tienda", aparecerá el panel de Administración. Desde allí, seleccionar "Adm. Usuarios" para crear y gestionar nuevos usuarios.
+Una vez dentro, accede al panel de administración desde el menú principal. En la sección "Adm. Usuarios" podrás gestionar el registro y control de usuarios.
+
