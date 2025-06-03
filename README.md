@@ -100,6 +100,3 @@ Una vez dentro, accede al panel de administración desde el menú principal. En 
 
 ---
 
-## 🧾 Licencia
-
-Este proyecto se distribuye bajo licencia MIT. Para más información, revisa el archivo `LICENSE`.
