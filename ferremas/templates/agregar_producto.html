@@ -5,229 +5,187 @@
     <meta charset="UTF-8">
     <title>Gestión de Productos</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-    <style>
-        body {
-            background: #0481d4 !important;
-        }
-        .card-producto {
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-            border: none;
-            margin-top: 60px;
-            margin-bottom: 60px;
-            background: #fff;
-        }
-        .card-producto .card-body {
-            padding: 2.5rem 2.5rem 2rem 2.5rem;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #051922;
-        }
-        .btn-orange {
-            background: #F28123;
-            color: #fff;
-            font-weight: 700;
-            border-radius: 50px;
-            padding: 6px 20px;
-            font-size: 1rem;
-            border: none;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            height: 36px;
-            min-width: 90px;
-        }
-        .btn-orange:hover {
-            background: #051922;
-            color: #F28123;
-        }
-        .btn-secondary {
-            border-radius: 50px;
-            font-weight: 700;
-            padding: 6px 20px;
-            font-size: 1rem;
-            height: 36px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 90px;
-        }
-        .btn-action {
-            border-radius: 20px !important;
-            font-size: 0.95rem !important;
-            padding: 4px 14px !important;
-            font-weight: 600;
-            min-width: 70px;
-            height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-action-edit {
-            background: #ffe082 !important;
-            color: #7c5700 !important;
-            border: none;
-        }
-        .btn-action-edit:hover {
-            background: #ffd54f !important;
-            color: #4e3900 !important;
-        }
-        .btn-action-delete {
-            background: #ff8a80 !important;
-            color: #fff !important;
-            border: none;
-        }
-        .btn-action-delete:hover {
-            background: #ff5252 !important;
-            color: #fff !important;
-        }
-        .table thead {
-            background: #f5f5f5;
-        }
-        .table td, .table th {
-            vertical-align: middle;
-        }
-        .img-preview {
-            max-width: 100px;
-            margin-top: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        }
-        /* Espacio extra debajo del input de imagen */
-        .mb-img-input {
-            margin-bottom: 1.2rem;
-        }
-        @media (max-width: 767px) {
-            .card-producto .card-body {
-                padding: 1.2rem;
-            }
-            .btn-orange, .btn-secondary {
-                min-width: 70px;
-                font-size: 0.95rem;
-                padding: 5px 10px;
-            }
-            .btn-action {
-                min-width: 55px;
-                font-size: 0.9rem !important;
-                padding: 3px 8px !important;
-            }
-            .mb-img-input {
-                margin-bottom: 0.8rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/forms-modern.css' %}?v=2">
 </head>
-<body>
-<div class="container">
-    <div class="card card-producto">
-        <div class="card-body">
-            <h2 class="mb-4" style="font-weight:700;color:#051922;">
-                <i class="fas fa-box" style="color:#F28123;"></i> Gestión de productos
-            </h2>
-            <!-- Formulario para agregar/editar producto -->
-            <form method="post" enctype="multipart/form-data" class="row g-3 mb-4">
-                {% csrf_token %}
-                <input type="hidden" name="producto_id" value="{{ producto_editar.id|default:'' }}">
-                <div class="col-md-6">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-control" required value="{{ producto_editar.nombre|default:'' }}">
+<body class="ferremas-bg">
+    <div class="container mt-4 mb-5">
+        <div class="card ferremas-main-card shadow border-0 ferremas-fade-in">
+            <div class="card-body">
+                <h1 class="ferremas-page-title">
+                    <i class="fas fa-box" style="color: #F28123; margin-right: 15px;"></i>
+                    Gestión de Productos
+                </h1>
+                
+                <div class="ferremas-text-center ferremas-mb-4">
+                    <a href="{% url 'index' %}" class="btn btn-ferremas-back">
+                        <i class="fas fa-arrow-left me-2"></i> Volver al inicio
+                    </a>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Marca</label>
-                    <input type="text" name="marca" class="form-control" required value="{{ producto_editar.marca|default:'' }}">
+
+                <!-- Formulario para agregar/editar producto -->
+                <div class="ferremas-add-form-card" style="margin-bottom: 40px;">
+                    <div class="ferremas-floating-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h3 class="ferremas-section-title">
+                        {% if producto_editar %}Editar producto{% else %}Añadir nuevo producto{% endif %}
+                    </h3>
+                    <form method="post" enctype="multipart/form-data" class="row g-3" style="padding: 20px 0;">
+                        {% csrf_token %}
+                        <input type="hidden" name="producto_id" value="{{ producto_editar.id|default:'' }}">
+                        
+                        <div class="col-md-6">
+                            <label class="ferremas-form-label">NOMBRE</label>
+                            <input type="text" name="nombre" class="form-control ferremas-form-control" 
+                                   placeholder="Nombre del producto" required value="{{ producto_editar.nombre|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="ferremas-form-label">MARCA</label>
+                            <input type="text" name="marca" class="form-control ferremas-form-control" 
+                                   placeholder="Marca del producto" required value="{{ producto_editar.marca|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="ferremas-form-label">DESCRIPCIÓN</label>
+                            <textarea name="descripcion" class="form-control ferremas-form-control" 
+                                      placeholder="Descripción del producto" required rows="3">{{ producto_editar.descripcion|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="ferremas-form-label">PRECIO</label>
+                            <input type="number" step="0.01" name="precio" class="form-control ferremas-form-control" 
+                                   placeholder="0.00" required value="{{ producto_editar.precio|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="ferremas-form-label">STOCK</label>
+                            <input type="number" name="stock" class="form-control ferremas-form-control" 
+                                   placeholder="Cantidad disponible" required value="{{ producto_editar.stock|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="ferremas-form-label">CATEGORÍA</label>
+                            <select name="categoria" class="form-select ferremas-form-select" required>
+                                <option value="">Selecciona una categoría</option>
+                                <option value="Martillos" {% if producto_editar.categoria == "Martillos" %}selected{% endif %}>🔨 Martillos</option>
+                                <option value="Taladro" {% if producto_editar.categoria == "Taladro" %}selected{% endif %}>🔧 Taladro</option>
+                                <option value="Destornilladores" {% if producto_editar.categoria == "Destornilladores" %}selected{% endif %}>🪛 Destornilladores</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="ferremas-form-label">IMAGEN</label>
+                            <input type="file" name="imagen" class="form-control ferremas-form-control" accept="image/*">
+                            {% if producto_editar.imagen %}
+                                <div class="mt-2">
+                                    <small class="text-muted">Imagen actual:</small><br>
+                                    <img src="{{ producto_editar.imagen }}" alt="Imagen actual" 
+                                         style="max-width: 120px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-top: 8px;">
+                                </div>
+                                <input type="hidden" name="imagen_actual" value="{{ producto_editar.imagen }}">
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-12 d-flex justify-content-end gap-3" style="padding-top: 20px;">
+                            <button type="submit" class="btn btn-ferremas">
+                                <i class="fas fa-{% if producto_editar %}edit{% else %}save{% endif %} me-2"></i>
+                                {% if producto_editar %}Actualizar{% else %}Guardar{% endif %}
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-12">
-                    <label class="form-label">Descripción</label>
-                    <textarea name="descripcion" class="form-control" required rows="2">{{ producto_editar.descripcion|default:'' }}</textarea>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Precio</label>
-                    <input type="number" step="0.01" name="precio" class="form-control" required value="{{ producto_editar.precio|default:'' }}">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Stock</label>
-                    <input type="number" name="stock" class="form-control" required value="{{ producto_editar.stock|default:'' }}">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Categoría</label>
-                    <select name="categoria" class="form-select" required>
-                        <option value="">Selecciona una categoría</option>
-                        <option value="Martillos" {% if producto_editar.categoria == "Martillos" %}selected{% endif %}>Martillos</option>
-                        <option value="Taladro" {% if producto_editar.categoria == "Taladro" %}selected{% endif %}>Taladro</option>
-                        <option value="Destornilladores" {% if producto_editar.categoria == "Destornilladores" %}selected{% endif %}>Destornilladores</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-img-input">
-                    <label class="form-label">Imagen</label>
-                    <input type="file" name="imagen" class="form-control">
-                    {% if producto_editar.imagen %}
-                        <img src="{{ producto_editar.imagen }}" alt="Imagen actual" class="img-preview">
-                    {% endif %}
-                </div>
-                {% if producto_editar and producto_editar.imagen %}
-                    <input type="hidden" name="imagen_actual" value="{{ producto_editar.imagen }}">
-                {% endif %}
-                <div class="col-12 d-flex gap-2">
-                    <button type="submit" class="btn btn-orange me-2">{% if producto_editar %}Actualizar{% else %}Guardar{% endif %}</button>
-                    <a href="{% url 'index' %}" class="btn btn-secondary">Volver a Inicio</a>
-                </div>
-            </form>
-            <hr>
-            <h4 class="mb-3" style="font-weight:700;">Productos existentes</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Categoría</th>
-                            <th>Marca</th>
-                            <th>Imagen</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for producto in productos %}
-                        <tr>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.descripcion }}</td>
-                            <td>${{ producto.precio }}</td>
-                            <td>{{ producto.stock }}</td>
-                            <td>{{ producto.categoria }}</td>
-                            <td>{{ producto.marca }}</td>
-                            <td>
-                                {% if producto.imagen %}
-                                    <img src="{{ producto.imagen }}" alt="img" class="img-preview" style="max-width:60px;">
-                                {% endif %}
-                            </td>
-                            <td>
-                                <form method="post" style="display:inline;">
+
+                <!-- Tabla de productos existentes -->
+                <h3 class="ferremas-section-title">Productos registrados</h3>
+                <div class="ferremas-productos-table-responsive">
+                    <table class="table ferremas-productos-table bg-white">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                <th><i class="fas fa-tag me-2"></i>Nombre</th>
+                                <th><i class="fas fa-align-left me-2"></i>Descripción</th>
+                                <th><i class="fas fa-dollar-sign me-2"></i>Precio</th>
+                                <th><i class="fas fa-boxes me-2"></i>Stock</th>
+                                <th><i class="fas fa-list me-2"></i>Categoría</th>
+                                <th><i class="fas fa-industry me-2"></i>Marca</th>
+                                <th><i class="fas fa-image me-2"></i>Imagen</th>
+                                <th><i class="fas fa-cogs me-2"></i>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for producto in productos %}
+                            <tr>
+                                <form method="post" class="d-contents">
                                     {% csrf_token %}
-                                    <input type="hidden" name="edit_id" value="{{ producto.id }}">
-                                    <button type="submit" class="btn btn-action btn-action-edit mb-1">Editar</button>
+                                    <td>
+                                        <span class="ferremas-id-badge">{{ producto.id }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="ferremas-user-info">
+                                            <div class="ferremas-user-avatar" style="background: linear-gradient(135deg, var(--ferremas-primary), var(--ferremas-primary-dark));">
+                                                {{ producto.nombre|first|upper }}
+                                            </div>
+                                            <span style="font-weight: 600; color: var(--ferremas-secondary);">{{ producto.nombre }}</span>
+                                        </div>
+                                    </td>
+                                    <td style="max-width: 150px;">
+                                        <small class="text-muted">{{ producto.descripcion|truncatechars:50 }}</small>
+                                    </td>
+                                    <td>
+                                        <span style="font-weight: 700; color: var(--ferremas-primary); font-size: 1.1rem;">
+                                            ${{ producto.precio }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background: var(--ferremas-primary); color: white; padding: 8px 12px; border-radius: 15px; font-size: 0.85rem;">
+                                            {{ producto.stock }} unidades
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background: var(--ferremas-secondary); color: white; padding: 8px 12px; border-radius: 15px; font-size: 0.85rem;">
+                                            {% if producto.categoria == "Martillos" %}🔨{% elif producto.categoria == "Taladro" %}🔧{% else %}🪛{% endif %}
+                                            {{ producto.categoria }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span style="font-weight: 600; color: var(--ferremas-secondary);">{{ producto.marca }}</span>
+                                    </td>
+                                    <td>
+                                        {% if producto.imagen %}
+                                            <img src="{{ producto.imagen }}" alt="img" 
+                                                 style="max-width: 50px; height: 50px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                        {% else %}
+                                            <div style="width: 50px; height: 50px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <button type="submit" name="edit_id" value="{{ producto.id }}" 
+                                                    class="btn ferremas-btn-action ferremas-btn-success" title="Editar" style="min-width: 80px;">
+                                                EDITAR
+                                            </button>
+                                            <button type="submit" name="delete_id" value="{{ producto.id }}" 
+                                                    class="btn ferremas-btn-action ferremas-btn-danger" title="Eliminar" style="min-width: 80px;"
+                                                    onclick="return confirm('¿Seguro que deseas eliminar este producto?');">
+                                                BORRAR
+                                            </button>
+                                        </div>
+                                    </td>
                                 </form>
-                                <form method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este producto?');">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="delete_id" value="{{ producto.id }}">
-                                    <button type="submit" class="btn btn-action btn-action-delete">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr><td colspan="8" class="text-center">No hay productos registrados.</td></tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                            </tr>
+                        {% empty %}
+                            <tr><td colspan="9" class="text-center text-muted py-4">No hay productos registrados.</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>

@@ -28,11 +28,23 @@ def login(usuario: UsuarioLogin, db: Session = Depends(get_db)):
     db_usuario = db.query(Usuario).filter(Usuario.username == usuario.username).first()
     if not db_usuario or not bcrypt.verify(usuario.password, db_usuario.hashed_password):
         raise HTTPException(status_code=400, detail="Credenciales incorrectas")
-    return {"msg": "Login exitoso", "rol": db_usuario.rol, "username": db_usuario.username}
+    
+    # Verificar si es administrador y primer inicio
+    primer_inicio = False
+    if db_usuario.rol == "administrador" and db_usuario.primer_inicio == 1:
+        primer_inicio = True
+    
+    return {
+        "msg": "Login exitoso", 
+        "rol": db_usuario.rol, 
+        "username": db_usuario.username,
+        "primer_inicio": primer_inicio,
+        "user_id": db_usuario.id
+    }
 
 @router.get("/usuarios/")
 def listar_usuarios(db: Session = Depends(get_db)):
-    usuarios = db.query(Usuario).all()
+    usuarios = db.query(Usuario).order_by(Usuario.id.asc()).all()
     return [
         {"id": u.id, "username": u.username, "email": u.email, "rol": u.rol}
         for u in usuarios
@@ -90,5 +102,24 @@ def cambiar_rol(user_id: int, nuevo_rol: str, db: Session = Depends(get_db)):
     usuario.rol = nuevo_rol
     db.commit()
     return {"msg": "Rol actualizado"}
+
+@router.post("/cambiar-password-primer-inicio/")
+def cambiar_password_primer_inicio(
+    data: dict,
+    db: Session = Depends(get_db)
+):
+    user_id = data.get("user_id")
+    nueva_password = data.get("nueva_password")
+    
+    usuario = db.query(Usuario).filter(Usuario.id == user_id).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+
+    usuario.hashed_password = bcrypt.hash(nueva_password)
+    usuario.primer_inicio = 0
+    db.commit()
+    
+    return {"msg": "Contraseña actualizada correctamente"}
 
 DATABASE_URL = "oracle+cx_oracle://usuariosbd:usuariosbd@localhost:1521/?service_name=orcl"

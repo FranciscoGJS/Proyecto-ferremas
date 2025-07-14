@@ -22,12 +22,14 @@ class Usuario(Base):
     email = Column(String(100), unique=True, index=True)
     hashed_password = Column(String(255))
     rol = Column(String(50), default=RolEnum.cliente.value)
+    primer_inicio = Column(Integer, default=1)
 
 Base.metadata.create_all(bind=engine)
 
 from sqlalchemy.orm import Session
 
 def crear_admin_default():
+    from passlib.hash import bcrypt
     session = Session(bind=engine)
     # Usuarios por defecto
     usuarios_default = [
@@ -35,31 +37,36 @@ def crear_admin_default():
             "username": "admin",
             "email": "admin@ferremas.com",
             "password": "admin123",
-            "rol": "administrador"
+            "rol": "administrador",
+            "primer_inicio": 1
         },
         {
             "username": "vendedor",
             "email": "vendedor@ferremas.com",
             "password": "vendedor123",
-            "rol": "vendedor"
+            "rol": "vendedor",
+            "primer_inicio": 0
         },
         {
             "username": "bodeguero",
             "email": "bodeguero@ferremas.com",
             "password": "bodeguero123",
-            "rol": "bodeguero"
+            "rol": "bodeguero",
+            "primer_inicio": 0
         },
         {
             "username": "contador",
             "email": "contador@ferremas.com",
             "password": "contador123",
-            "rol": "contador"
+            "rol": "contador",
+            "primer_inicio": 0 
         },
         {
             "username": "cliente",
             "email": "cliente@ferremas.com",
             "password": "cliente123",
-            "rol": "cliente"
+            "rol": "cliente",
+            "primer_inicio": 0 
         }
     ]
     for u in usuarios_default:
@@ -69,7 +76,8 @@ def crear_admin_default():
                 username=u["username"],
                 email=u["email"],
                 hashed_password=bcrypt.hash(u["password"]),
-                rol=u["rol"]
+                rol=u["rol"],
+                primer_inicio=u.get("primer_inicio", 0)
             )
             session.add(usuario)
     session.commit()

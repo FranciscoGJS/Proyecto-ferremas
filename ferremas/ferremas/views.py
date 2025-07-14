@@ -7,6 +7,14 @@ from django.conf import settings
 import os
 from .models import PagoTransferencia
 import json
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from django.http import HttpResponse
+from datetime import datetime
 
 
 def add_to_cart(request):
@@ -60,7 +68,34 @@ def about(request):
 def cart(request):
     cart = request.session.get("cart", {})
     subtotal = sum(float(item["precio"]) * int(item["cantidad"]) for item in cart.values())
-    return render(request, "cart.html", {"subtotal": subtotal})
+    
+    # Calcular descuento por cantidad de productos
+    total_productos = sum(int(item["cantidad"]) for item in cart.values())
+    descuento_porcentaje = 0
+    descuento_texto = ""
+    
+    if total_productos >= 10:
+        descuento_porcentaje = 15
+        descuento_texto = "¡Descuento por compra mayorista!"
+    elif total_productos >= 6:
+        descuento_porcentaje = 10
+        descuento_texto = "¡Descuento por compra múltiple!"
+    elif total_productos >= 3:
+        descuento_porcentaje = 5
+        descuento_texto = "¡Descuento por volumen!"
+    
+    descuento_monto = (subtotal * descuento_porcentaje) / 100
+    total_final = subtotal - descuento_monto
+    
+    return render(request, "cart.html", {
+        "cart": cart,
+        "subtotal": subtotal,
+        "total_productos": total_productos,
+        "descuento_porcentaje": descuento_porcentaje,
+        "descuento_monto": descuento_monto,
+        "descuento_texto": descuento_texto,
+        "total_final": total_final
+    })
 
 # Vista para la página "Contact"
 def contact(request):
@@ -102,7 +137,6 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        # Cambia el puerto si tu API está en otro
         response = requests.post(
             "http://127.0.0.1:8001/login/",
             json={"username": username, "password": password}
@@ -111,10 +145,62 @@ def login_view(request):
             data = response.json()
             request.session["username"] = data["username"]
             request.session["rol"] = data["rol"]
+            request.session["user_id"] = data.get("user_id")
+            
+            # Si es administrador y primer inicio, redirigir a cambio de contraseña
+            if data.get("primer_inicio", False):
+                request.session["primer_inicio"] = True
+                return redirect("cambiar_password_primer_inicio")
+            
             return redirect("index")
         else:
             return render(request, "login.html", {"form": {"errors": True}})
     return render(request, "login.html", {"form": {}})
+
+def cambiar_password_primer_inicio(request):
+    # Verificar que sea administrador y primer inicio
+    if not request.session.get("primer_inicio"):
+        return redirect("index")
+    
+    if request.method == "POST":
+        nueva_password = request.POST["nueva_password"]
+        confirmar_password = request.POST["confirmar_password"]
+        user_id = request.session.get("user_id")
+        
+        if nueva_password != confirmar_password:
+            return render(request, "cambiar_password_primer_inicio.html", {
+                "error": "Las contraseñas no coinciden"
+            })
+        
+        if len(nueva_password) < 6:
+            return render(request, "cambiar_password_primer_inicio.html", {
+                "error": "La contraseña debe tener al menos 6 caracteres"
+            })
+        
+        # Llamar a la API para cambiar contraseña
+        try:
+            response = requests.post(
+                "http://127.0.0.1:8001/cambiar-password-primer-inicio/",
+                json={
+                    "user_id": user_id,
+                    "nueva_password": nueva_password
+                }
+            )
+            
+            if response.status_code == 200:
+                # Limpiar sesión de primer inicio
+                del request.session["primer_inicio"]
+                return redirect("index")
+            else:
+                return render(request, "cambiar_password_primer_inicio.html", {
+                    "error": "Error al cambiar la contraseña"
+                })
+        except Exception as e:
+            return render(request, "cambiar_password_primer_inicio.html", {
+                "error": f"Error de conexión: {str(e)}"
+            })
+    
+    return render(request, "cambiar_password_primer_inicio.html")
 
 def registro_view(request):
     if request.method == "POST":
@@ -152,6 +238,11 @@ def admin_usuarios(request):
         email = request.POST["email"]
         password = request.POST["password"]
         rol = request.POST["rol"]
+        
+        # Si es administrador, usar contraseña genérica
+        if rol == "administrador":
+            password = "admin123"
+        
         requests.post(
             "http://127.0.0.1:8001/registro/",
             json={
@@ -311,10 +402,32 @@ def agregar_producto(request):
 def transferencia_view(request):
     cart = request.session.get("cart", {})
     subtotal = sum(float(item["precio"]) * int(item["cantidad"]) for item in cart.values())
+    
+    # Calcular descuento
+    total_productos = sum(int(item["cantidad"]) for item in cart.values())
+    descuento_porcentaje = 0
+    descuento_texto = ""
+    
+    if total_productos >= 10:
+        descuento_porcentaje = 15
+        descuento_texto = "¡Descuento por compra mayorista!"
+    elif total_productos >= 6:
+        descuento_porcentaje = 10
+        descuento_texto = "¡Descuento por compra múltiple!"
+    elif total_productos >= 3:
+        descuento_porcentaje = 5
+        descuento_texto = "¡Descuento por volumen!"
+    
+    descuento_monto = (subtotal * descuento_porcentaje) / 100
+    total_final = subtotal - descuento_monto
+    
     if request.method == "POST":
         usuario = request.session.get("username")
-        monto = request.POST["monto"]
+        monto = total_final  # Usar el total con descuento
         detalles = request.POST.get("detalles", "")
+        if descuento_porcentaje > 0:
+            detalles += f" (Descuento {descuento_porcentaje}% aplicado)"
+        
         PagoTransferencia.objects.create(
             usuario=usuario,
             monto=monto,
@@ -323,9 +436,15 @@ def transferencia_view(request):
         )
         request.session["cart"] = {}
         return redirect("gracias_transferencia")
+    
     return render(request, "transferencia.html", {
         "cart": cart,
-        "subtotal": subtotal
+        "subtotal": subtotal,
+        "total_productos": total_productos,  # ← Agregar esta línea
+        "descuento_porcentaje": descuento_porcentaje,
+        "descuento_monto": descuento_monto,
+        "descuento_texto": descuento_texto,  # ← Agregar esta línea
+        "total_final": total_final
     })
 
 def pagos_transferencia_contador(request):
@@ -412,3 +531,135 @@ def pedidos_vendedor(request):
         pedido.save()
         return redirect("pedidos_vendedor")
     return render(request, "pedidos_vendedor.html", {"pedidos": pedidos})
+
+def descargar_informe_pagos_pdf(request):
+    # Verificar permisos
+    rol = request.session.get("rol")
+    if rol not in ["contador", "administrador"]:
+        return redirect("index")
+    
+    # Crear respuesta HTTP con tipo PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="informe_pagos_{datetime.now().strftime("%Y%m%d_%H%M")}.pdf"'
+    
+    # Obtener datos
+    pagos = PagoTransferencia.objects.filter(tipo_pago="transferencia").exclude(estado="oculto_contador").order_by('-fecha')
+    
+    # Crear documento PDF
+    doc = SimpleDocTemplate(response, pagesize=A4)
+    elements = []
+    
+    # Estilos
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=18,
+        spaceAfter=30,
+        textColor=colors.HexColor('#051922'),
+        alignment=1  # Centro
+    )
+    
+    subtitle_style = ParagraphStyle(
+        'CustomSubtitle',
+        parent=styles['Normal'],
+        fontSize=12,
+        spaceAfter=20,
+        textColor=colors.HexColor('#666666'),
+        alignment=1  # Centro
+    )
+    
+    # Título
+    elements.append(Paragraph("FERREMAS - INFORME DE PAGOS POR TRANSFERENCIA", title_style))
+    elements.append(Paragraph(f"Generado el {datetime.now().strftime('%d/%m/%Y a las %H:%M')}", subtitle_style))
+    elements.append(Spacer(1, 20))
+    
+    # Resumen
+    total_pagos = pagos.count()
+    pendientes = pagos.filter(estado="pendiente").count()
+    aceptados = pagos.filter(estado="aceptado").count()
+    rechazados = pagos.filter(estado="rechazado").count()
+    monto_total = sum(float(pago.monto) for pago in pagos)
+    
+    resumen_data = [
+        ['RESUMEN GENERAL', '', ''],
+        ['Total de pagos:', str(total_pagos), ''],
+        ['Pendientes:', str(pendientes), ''],
+        ['Aceptados:', str(aceptados), ''],
+        ['Rechazados:', str(rechazados), ''],
+        ['Monto total:', f'${monto_total:,.2f}', ''],
+    ]
+    
+    resumen_table = Table(resumen_data, colWidths=[3*inch, 1.5*inch, 1.5*inch])
+    resumen_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#F28123')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 1), (0, -1), 'Helvetica-Bold'),
+    ]))
+    
+    elements.append(resumen_table)
+    elements.append(Spacer(1, 30))
+    
+    # Tabla de pagos
+    if pagos.exists():
+        elements.append(Paragraph("DETALLE DE PAGOS", styles['Heading2']))
+        elements.append(Spacer(1, 10))
+        
+        # Cabeceras
+        data = [['Usuario', 'Monto', 'Fecha', 'Estado', 'Detalles']]
+        
+        # Datos
+        for pago in pagos:
+            estado_texto = {
+                'pendiente': 'Pendiente',
+                'aceptado': 'Aceptado',
+                'rechazado': 'Rechazado',
+                'listo': 'Listo'
+            }.get(pago.estado, pago.estado.title())
+            
+            detalles = pago.detalles[:30] + '...' if pago.detalles and len(pago.detalles) > 30 else (pago.detalles or 'Sin detalles')
+            
+            data.append([
+                pago.usuario,
+                f'${pago.monto:,.2f}',
+                pago.fecha.strftime('%d/%m/%Y %H:%M'),
+                estado_texto,
+                detalles
+            ])
+        
+        # Crear tabla
+        table = Table(data, colWidths=[1.5*inch, 1*inch, 1.5*inch, 1*inch, 2*inch])
+        table.setStyle(TableStyle([
+            # Encabezado
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#051922')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            
+            # Datos
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ]))
+        
+        elements.append(table)
+    else:
+        elements.append(Paragraph("No hay pagos para mostrar.", styles['Normal']))
+    
+    # Pie de página
+    elements.append(Spacer(1, 50))
+    elements.append(Paragraph("Ferremas - Sistema de gestión de pagos", subtitle_style))
+    
+    # Construir PDF
+    doc.build(elements)
+    return response

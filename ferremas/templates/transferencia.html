@@ -57,7 +57,7 @@
                 <li><b>Cuenta:</b> 123456789</li>
                 <li><b>RUT:</b> 11.111.111-1</li>
                 <li><b>Correo:</b> pagos@ferremas.com</li>
-                <li><b>Monto:</b> ${{ subtotal }}</li>
+                <li><b>Monto:</b> ${{ total_final|default:subtotal }}</li>
             </ul>
 
             <h4 class="mt-4 mb-3" style="font-weight:700;">Detalle de la compra</h4>
@@ -87,12 +87,27 @@
                             <td colspan="3" class="text-end"><strong>Subtotal</strong></td>
                             <td><strong>${{ subtotal }}</strong></td>
                         </tr>
+                        {% if descuento_porcentaje > 0 %}
+                        <tr style="background: #e8f5e8;">
+                            <td colspan="3" class="text-end"><strong>Descuento ({{ descuento_porcentaje }}%)</strong></td>
+                            <td style="color: #28a745;"><strong>-${{ descuento_monto|floatformat:2 }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total Final</strong></td>
+                            <td><strong>${{ total_final|floatformat:2 }}</strong></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total</strong></td>
+                            <td><strong>${{ subtotal }}</strong></td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
             <form method="post">
                 {% csrf_token %}
-                <input type="hidden" name="monto" value="{{ subtotal }}">
+                <input type="hidden" name="monto" value="{{ total_final|default:subtotal }}">
                 <div class="mb-3">
                     <label>Número de tarjeta:</label>
                     <input type="text" name="detalles" class="form-control" placeholder="Número de tarjeta">

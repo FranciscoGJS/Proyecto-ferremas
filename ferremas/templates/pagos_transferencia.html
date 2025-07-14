@@ -3,122 +3,131 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Pagos por Transferencia</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
-    <style>
-        body {
-            background: #0481d4 !important;
-        }
-        .card-pagos-transferencia {
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-            border: none;
-            margin-top: 60px;
-            margin-bottom: 60px;
-            background: #fff;
-        }
-        .card-pagos-transferencia .card-body {
-            padding: 2.5rem 2.5rem 2rem 2.5rem;
-        }
-        .table thead {
-            background: #f5f5f5;
-        }
-        .table td, .table th {
-            vertical-align: middle;
-        }
-        .badge {
-            font-size: 1rem;
-            padding: 0.5em 1em;
-            border-radius: 20px;
-        }
-        .btn-success, .btn-danger {
-            border-radius: 20px !important;
-            font-size: 0.95rem !important;
-            padding: 4px 14px !important;
-            font-weight: 600;
-            min-width: 70px;
-            height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        @media (max-width: 767px) {
-            .card-pagos-transferencia .card-body {
-                padding: 1.2rem;
-            }
-            .badge {
-                font-size: 0.95rem;
-                padding: 0.4em 0.8em;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos por Transferencia - Ferremas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/forms-modern.css' %}">
 </head>
-<body>
-    <div class="container">
-        <div class="card card-pagos-transferencia">
+<body class="ferremas-bg">
+    <div class="container mt-4 mb-5">
+        <div class="card ferremas-main-card shadow border-0 ferremas-fade-in">
             <div class="card-body">
-                <h2 class="mb-4" style="font-weight:700;color:#051922;">
-                    <i class="fas fa-university" style="color:#F28123;"></i> Pagos por Transferencia
-                </h2>
-                <form method="post" style="margin-bottom:20px;">
-                    {% csrf_token %}
-                    <button type="submit" name="accion" value="eliminar_todos" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar todos los pagos?');">
-                        Limpiar todos los pagos
-                    </button>
-                </form>
+                <!-- Header con título -->
+                <div class="text-center mb-4">
+                    <h2 class="ferremas-main-title">
+                        <i class="fas fa-university me-3"></i>
+                        Pagos por Transferencia
+                    </h2>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="d-flex flex-wrap gap-3 mb-4 justify-content-center">
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" name="accion" value="eliminar_todos" 
+                                class="btn ferremas-btn-danger" 
+                                onclick="return confirm('¿Seguro que deseas eliminar todos los pagos?');">
+                            <i class="fas fa-trash me-2"></i>Limpiar todos los pagos
+                        </button>
+                    </form>
+                    
+                    <a href="{% url 'descargar_informe_pagos_pdf' %}" class="btn ferremas-btn-success">
+                        <i class="fas fa-file-pdf me-2"></i>Descargar informe PDF
+                    </a>
+                    
+                    <a href="{% url 'index' %}" class="btn btn-ferremas">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al inicio
+                    </a>
+                </div>
+                
+                <!-- Tabla de pagos -->
                 <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
+                    <table class="table ferremas-table bg-white">
                         <thead>
                             <tr>
-                                <th>Usuario</th>
-                                <th>Monto</th>
-                                <th>Fecha</th>
-                                <th>Comprobante / Detalles</th>
-                                <th>Estado</th>
-                                <th>Acción</th>
+                                <th><i class="fas fa-user me-2"></i>Usuario</th>
+                                <th><i class="fas fa-dollar-sign me-2"></i>Monto</th>
+                                <th><i class="fas fa-calendar me-2"></i>Fecha</th>
+                                <th><i class="fas fa-file-invoice me-2"></i>Comprobante / Detalles</th>
+                                <th><i class="fas fa-info-circle me-2"></i>Estado</th>
+                                <th><i class="fas fa-cogs me-2"></i>Acción</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for pago in pagos %}
                             <tr>
-                                <td>{{ pago.usuario }}</td>
-                                <td>${{ pago.monto }}</td>
-                                <td>{{ pago.fecha|date:"d/m/Y H:i" }}</td>
+                                <td>
+                                    <div class="ferremas-user-info">
+                                        <div class="ferremas-user-avatar" style="background: linear-gradient(135deg, var(--ferremas-primary), var(--ferremas-primary-dark));">
+                                            {{ pago.usuario|first|upper }}
+                                        </div>
+                                        <span style="font-weight: 600; color: var(--ferremas-secondary);">{{ pago.usuario }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span style="font-weight: 700; color: var(--ferremas-primary); font-size: 1.1rem;">
+                                        ${{ pago.monto }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ pago.fecha|date:"d/m/Y H:i" }}</small>
+                                </td>
                                 <td>
                                     {% if pago.comprobante %}
-                                        <a href="{{ pago.comprobante.url }}" target="_blank">Ver</a>
+                                        <a href="{{ pago.comprobante.url }}" target="_blank" class="btn ferremas-btn-info btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Ver
+                                        </a>
                                     {% elif pago.detalles %}
-                                        {{ pago.detalles }}
+                                        <small class="text-muted">{{ pago.detalles|truncatechars:30 }}</small>
                                     {% else %}
-                                        Sin comprobante
+                                        <span class="text-muted">Sin comprobante</span>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if pago.estado == "listo" %}
-                                        <span class="badge bg-success">Listo para entregar</span>
+                                        <span class="badge" style="background: var(--ferremas-success); color: white; padding: 8px 12px; border-radius: 15px; font-size: 0.85rem;">
+                                            <i class="fas fa-check me-1"></i>Listo para entregar
+                                        </span>
                                     {% elif pago.estado == "pendiente" %}
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                        <span class="badge" style="background: var(--ferremas-warning); color: white; padding: 8px 12px; border-radius: 15px; font-size: 0.85rem;">
+                                            <i class="fas fa-clock me-1"></i>Pendiente
+                                        </span>
                                     {% elif pago.estado == "aceptado" %}
-                                        <span class="badge bg-info text-dark">Aceptado</span>
+                                        <span class="badge" style="background: var(--ferremas-info); color: white; padding: 8px 12px; border-radius: 15px; font-size: 0.85rem;">
+                                            <i class="fas fa-thumbs-up me-1"></i>Aceptado
+                                        </span>
                                     {% elif pago.estado == "rechazado" %}
-                                        <span class="badge bg-danger">Rechazado</span>
+                                        <span class="badge" style="background: var(--ferremas-danger); color: white; padding: 8px 12px; border-radius: 15px; font-size: 0.85rem;">
+                                            <i class="fas fa-times me-1"></i>Rechazado
+                                        </span>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if pago.estado == "pendiente" %}
-                                    <form method="post" style="display:inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="pago_id" value="{{ pago.id }}">
-                                        <button name="accion" value="aceptar" class="btn btn-success btn-sm">Aceptar</button>
-                                        <button name="accion" value="rechazar" class="btn btn-danger btn-sm">Rechazar</button>
-                                    </form>
+                                    <div class="d-flex gap-2">
+                                        <form method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="pago_id" value="{{ pago.id }}">
+                                            <button name="accion" value="aceptar" class="btn ferremas-btn-action ferremas-btn-success" style="min-width: 80px;">
+                                                ACEPTAR
+                                            </button>
+                                        </form>
+                                        <form method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="pago_id" value="{{ pago.id }}">
+                                            <button name="accion" value="rechazar" class="btn ferremas-btn-action ferremas-btn-danger" style="min-width: 80px;">
+                                                RECHAZAR
+                                            </button>
+                                        </form>
+                                    </div>
                                     {% else %}
-                                        <!-- Sin acción disponible -->
+                                        <span class="text-muted">Sin acción</span>
                                     {% endif %}
                                 </td>
                             </tr>
+                            {% empty %}
+                            <tr><td colspan="6" class="text-center text-muted py-4">No hay pagos registrados.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>

@@ -7,94 +7,115 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms-modern.css' %}?v=2">
 </head>
-<body style="background: #0481d4;">
-    <div class="container mt-5 mb-5">
-        <div class="card shadow border-0" style="border-radius: 20px;">
-            <div class="card-body p-5">
-                <h1 class="mb-4" style="font-weight: 700; color: #051922;">
-                    <i class="fas fa-users-cog" style="color: #F28123;"></i> Gestión de Usuarios
+<body class="ferremas-bg">
+    <div class="container mt-4 mb-5">
+        <div class="card ferremas-main-card shadow border-0 ferremas-fade-in">
+            <div class="card-body">
+                <h1 class="ferremas-page-title">
+                    <i class="fas fa-users-cog" style="color: #F28123; margin-right: 15px;"></i>
+                    Gestión de Usuarios
                 </h1>
-                <a href="{% url 'index' %}" class="btn boxed-btn mb-4" style="background:#F28123;color:#fff;font-weight:700;border-radius:50px; padding: 15px 40px; font-size: 1.2rem; display: inline-block;">
-                     <i class="fas fa-arrow-left"></i> Volver al inicio
-                </a>
+                
+                <div class="ferremas-text-center ferremas-mb-4">
+                    <a href="{% url 'index' %}" class="btn btn-ferremas-back">
+                        <i class="fas fa-arrow-left me-2"></i> Volver al inicio
+                    </a>
+                </div>
 
                 <!-- Añadir usuario -->
-                <h3 class="mb-3" style="font-weight: 700;">Añadir usuario</h3>
-                <form method="post" class="row g-2 mb-4 align-items-end">
-                    {% csrf_token %}
-                    <input type="hidden" name="add_user" value="1">
-                    <div class="col-md-3">
-                        <input type="text" name="username" class="form-control" placeholder="Usuario" required>
+                <div class="ferremas-add-form-card">
+                    <div class="ferremas-floating-icon">
+                        <i class="fas fa-user-plus"></i>
                     </div>
-                    <div class="col-md-3">
-                        <input type="email" name="email" class="form-control" placeholder="Correo" required>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
-                    </div>
-                    <div class="col-md-2">
-                        <select name="rol" class="form-select" required>
-                            <option value="cliente">Cliente</option>
-                            <option value="administrador">Administrador</option>
-                            <option value="vendedor">Vendedor</option>
-                            <option value="bodeguero">Bodeguero</option>
-                            <option value="contador">Contador</option>
-                        </select>
-                    </div>
-                    <div class="col-md-1 d-flex justify-content-end">
-                        <button type="submit" class="btn boxed-btn" style="background:#F28123;color:#fff;font-weight:700;border-radius:50px; padding: 8px 20px; font-size: 1rem;">
-                            Añadir
-                        </button>
-                    </div>
-                </form>
+                    <h3 class="ferremas-section-title">Añadir nuevo usuario</h3>
+                    <form method="post" class="row g-3 align-items-end">
+                        {% csrf_token %}
+                        <input type="hidden" name="add_user" value="1">
+                        <div class="col-md-3">
+                            <label class="ferremas-form-label">Usuario</label>
+                            <input type="text" name="username" class="form-control ferremas-form-control" placeholder="Nombre de usuario" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="ferremas-form-label">Correo</label>
+                            <input type="email" name="email" class="form-control ferremas-form-control" placeholder="correo@ejemplo.com" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="ferremas-form-label">Contraseña</label>
+                            <input type="password" name="password" class="form-control ferremas-form-control" placeholder="••••••••" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="ferremas-form-label">Rol</label>
+                            <select name="rol" class="form-select ferremas-form-select" required>
+                                <option value="cliente">👤 Cliente</option>
+                                <option value="administrador">👑 Administrador</option>
+                                <option value="vendedor">🛒 Vendedor</option>
+                                <option value="bodeguero">📦 Bodeguero</option>
+                                <option value="contador">💰 Contador</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-ferremas">
+                                <i class="fas fa-plus me-2"></i>Añadir
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
                 <!-- Tabla de usuarios -->
-                <h3 class="mb-3" style="font-weight: 700;">Usuarios registrados</h3>
+                <h3 class="ferremas-section-title">Usuarios registrados</h3>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle bg-white">
-                        <thead class="table-dark">
+                    <table class="table ferremas-table bg-white">
+                        <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Rol</th>
-                                <th>Acciones</th>
+                                <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                <th><i class="fas fa-user me-2"></i>Usuario</th>
+                                <th><i class="fas fa-envelope me-2"></i>Email</th>
+                                <th><i class="fas fa-user-tag me-2"></i>Rol</th>
+                                <th><i class="fas fa-cogs me-2"></i>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for usuario in usuarios %}
                             <tr>
-                                <form method="post" class="row g-1">
+                                <form method="post" class="d-contents">
                                     {% csrf_token %}
-                                    <td>{{ usuario.id }}</td>
                                     <td>
-                                        <input type="text" name="edit_username" value="{{ usuario.username }}" class="form-control" required>
+                                        <span class="ferremas-id-badge">{{ usuario.id }}</span>
                                     </td>
                                     <td>
-                                        <input type="email" name="edit_email" value="{{ usuario.email }}" class="form-control" required>
+                                        <div class="ferremas-user-info">
+                                            <div class="ferremas-user-avatar">
+                                                {{ usuario.username|first|upper }}
+                                            </div>
+                                            <input type="text" name="edit_username" value="{{ usuario.username }}" class="form-control ferremas-form-control" required>
+                                        </div>
                                     </td>
                                     <td>
-                                        <select name="edit_rol" class="form-select" required>
-                                            <option value="cliente" {% if usuario.rol == "cliente" %}selected{% endif %}>Cliente</option>
-                                            <option value="administrador" {% if usuario.rol == "administrador" %}selected{% endif %}>Administrador</option>
-                                            <option value="vendedor" {% if usuario.rol == "vendedor" %}selected{% endif %}>Vendedor</option>
-                                            <option value="bodeguero" {% if usuario.rol == "bodeguero" %}selected{% endif %}>Bodeguero</option>
-                                            <option value="contador" {% if usuario.rol == "contador" %}selected{% endif %}>Contador</option>
+                                        <input type="email" name="edit_email" value="{{ usuario.email }}" class="form-control ferremas-form-control" required>
+                                    </td>
+                                    <td>
+                                        <select name="edit_rol" class="form-select ferremas-form-select" required>
+                                            <option value="cliente" {% if usuario.rol == "cliente" %}selected{% endif %}>👤 Cliente</option>
+                                            <option value="administrador" {% if usuario.rol == "administrador" %}selected{% endif %}>👑 Administrador</option>
+                                            <option value="vendedor" {% if usuario.rol == "vendedor" %}selected{% endif %}>🛒 Vendedor</option>
+                                            <option value="bodeguero" {% if usuario.rol == "bodeguero" %}selected{% endif %}>📦 Bodeguero</option>
+                                            <option value="contador" {% if usuario.rol == "contador" %}selected{% endif %}>💰 Contador</option>
                                         </select>
                                     </td>
                                     <td>
                                         <input type="hidden" name="user_id" value="{{ usuario.id }}">
-                                        <button type="submit" name="edit_user" value="1" class="btn btn-success btn-sm me-1">
-                                            <i class="fas fa-save"></i> Guardar
+                                        <button type="submit" name="edit_user" value="1" class="btn ferremas-btn-action ferremas-btn-success">
+                                            <i class="fas fa-save me-1"></i>Guardar
                                         </button>
                                 </form>
                                 <form method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <input type="hidden" name="delete_user" value="1">
                                     <input type="hidden" name="delete_user_id" value="{{ usuario.id }}">
-                                    <button type="submit" class="btn btn-danger btn-sm" style="padding: 6px 18px;" onclick="return confirm('¿Seguro que deseas borrar este usuario?');">
-                                        <i class="fas fa-trash"></i> Borrar
+                                    <button type="submit" class="btn ferremas-btn-action ferremas-btn-danger" onclick="return confirm('¿Seguro que deseas borrar este usuario?');">
+                                        <i class="fas fa-trash me-1"></i>Borrar
                                     </button>
                                 </form>
                                     </td>
